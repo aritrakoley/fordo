@@ -1,0 +1,76 @@
+
+recipe {
+	id int pk
+	prep_time int
+	calorie_count float
+	serving_size int
+	cook_time int
+	recipe_name varchar
+	is_active bool
+}
+
+notes {
+	id int pk
+	title varchar
+	body varchar
+	recipe_id int > recipe.id
+	is_active bool
+}
+
+recipe_meal_type_map {
+	id int pk
+	recipe_id int > recipe.id
+	meal_type_id int > meal_type.id
+	is_active bool
+}
+
+ingredient {
+	id int pk
+	ingredient_name varchar
+	ingredient_details varchar
+	linked_recipe integer > recipe.id
+	is_active bool
+}
+
+recipe_ingredient_map {
+	id int pk
+	recipe_id int > recipe.id
+	ingredient_id int > ingredient.id
+	is_active bool
+}
+
+ingredient_local_names {
+	id int pk
+	ingredient_id int > ingredient.id
+	local_name varchar
+	is_active bool
+}
+
+tag {
+	id int pk
+	tag_label varchar
+	is_active bool
+}
+
+tag_map {
+	id int pk
+	tag_id int > tag.id
+	recipe_id int > recipe.id
+	is_active bool
+}
+
+meal_type {
+	id int pk
+	meal_type_label varchar
+	is_active bool
+}
+
+recipe_step {
+	id int pk
+	recipe_id int > recipe.id
+	title varchar
+	body varchar
+	sort_order int
+	is_active bool
+}
+

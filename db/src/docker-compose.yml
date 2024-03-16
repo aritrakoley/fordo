@@ -1,0 +1,28 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+networks:
+  fordo_network:
+
+
+services:
+
+  db:
+    image: postgres:alpine
+    container_name: fordo_db
+    restart: always
+    shm_size: 128mb
+
+    volumes:
+      - ../fordo_db/postgres/data:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_DB: fordo_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: H0meC00kedMeals
+
+    ports:
+      - 5432:5432
+
+    networks:
+      - fordo_network
