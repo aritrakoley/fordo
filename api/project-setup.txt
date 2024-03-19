@@ -1,0 +1,2 @@
+npm i express dotenv pg && npm i -D typescript @types/express @types/node @types/pg nodemon ts-node
+npx tsc --init
