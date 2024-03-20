@@ -1,8 +1,15 @@
-export interface RecipeIngredient {
-  ingredient_id: number;
-  quantity: number;
-  unit: string;
+export interface RecipeRow {
+  
 }
+
+export interface Ingredient {
+  id: number;
+  ingredient_name: string;
+  ingredient_details: string;
+  ingredient_local_names: string[];
+}
+
+export type RecipeIngredient = Pick<Ingredient,  'id'> & ;
 
 export interface RecipeStep {
   sort_order: number;
@@ -10,12 +17,12 @@ export interface RecipeStep {
   body: string;
 }
 
-export interface RecipeNote {
+export interface Note {
   title: string;
   body: string;
 }
 
-export default interface CreateRecipeRequest {
+export default interface Recipe {
   recipe_name: string;
   prep_time: number;
   cook_time: number;
