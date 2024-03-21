@@ -1,7 +1,7 @@
 import { Pool, QueryResult } from "pg";
 import { config } from "../configs/fordo-db.config";
 
-const pool = new Pool(config);
+export const pool = new Pool(config);
 
 export const simpleQuery = async (text: string, params?: any) => {
   let result = null;

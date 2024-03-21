@@ -1,6 +1,6 @@
-import { ClientConfig } from "pg";
+import { ConnectionConfig } from "pg";
 
-export const config: ClientConfig = {
+export const config: ConnectionConfig = {
   host: process.env.PGHOST,
   user: process.env.PGUSER,
   database: process.env.PGDATABASE,
