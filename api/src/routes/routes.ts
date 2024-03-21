@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createRecipe } from "../controllers/basic.controller";
+import { createIngredient } from "../controllers/ingredient.controller";
 
 export const router = Router();
 
-router.post("/recipe/create", createRecipe);
+router.post("/ingredient/create", createIngredient);
