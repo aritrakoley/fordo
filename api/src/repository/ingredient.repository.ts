@@ -1,5 +1,5 @@
 import { PGSCHEMA } from "../configs/constants";
-import { pool } from "../db/fordo-db.main";
+import { pool, simpleQuery } from "../db/fordo-db.main";
 import { Ingredient } from "../types/ingredient.types";
 
 export const insertIngredient = async (ingredient: Partial<Ingredient>) => {
@@ -158,5 +158,26 @@ export const updateIngredient = async (ingredient: Partial<Ingredient>) => {
   } finally {
     client.release();
   }
+  return [ok, result, error];
+};
+
+export const listIngredient = async (ingredient_ids: number[]) => {
+  const sql = `
+    select 
+      id,
+      ingredient_name,
+      ingredient_details,
+      linked_recipe
+    from 
+      ${PGSCHEMA}.ingredient
+    where
+      is_active = true
+      ${ingredient_ids?.length ? "and id in ($1)" : ""}
+    ;
+  `;
+
+  const val: number[][] = [];
+  if (ingredient_ids?.length) val.push(ingredient_ids);
+  const [ok, result, error] = await simpleQuery(sql, val);
   return [ok, result, error];
 };

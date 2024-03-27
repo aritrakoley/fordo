@@ -20,6 +20,15 @@ export const editIngredient = async (request: IngredientUpdateRequest) => {
   const [ok, result, error] = await ingredientRepository.updateIngredient(
     ingredient
   );
+  return [ok, result, error];
+};
+
+export const listIngredient = async (request: { ids: number[] }) => {
+  const ingredient_ids: number[] = request.ids || [];
+
+  const [ok, result, error] = await ingredientRepository.listIngredient(
+    ingredient_ids
+  );
 
   console.log([ok, result, error]);
   return [ok, result, error];

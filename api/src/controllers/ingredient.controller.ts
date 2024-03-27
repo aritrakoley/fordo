@@ -43,3 +43,25 @@ export const editIngredient = async (req: Request, res: Response) => {
 
   res.status(200).json({ message: "Ingredient updated successfully" });
 };
+
+export const listIngredients = async (req: Request, res: Response) => {
+  console.log({ body: req.body, type: typeof req.body });
+  const validation = validate<{ ids: number[] } | {}>(req.body);
+
+  if (!validation.success) {
+    res.status(400).json({ validationErrors: validation.errors });
+    return;
+  }
+
+  const [ok, result, error] = await ingredientService.listIngredient(req.body);
+
+  if (!ok) {
+    res.status(500).json({ serverError: error });
+    return;
+  }
+
+  res.status(200).json({
+    message: "Ingredients fetched successfully",
+    ingredients: result,
+  });
+};
