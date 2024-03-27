@@ -1,7 +1,7 @@
-import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 
+import express, { Express, Request, Response } from "express";
 import { router } from "./src/routes/routes";
 
 const app: Express = express();
@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("fordo server is working");
+  res.send("fordo-api server is running...");
 });
 
 app.listen(port, () => {
