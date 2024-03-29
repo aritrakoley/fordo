@@ -30,6 +30,5 @@ export const listIngredient = async (request: { ids: number[] }) => {
     ingredient_ids
   );
 
-  console.log([ok, result, error]);
   return [ok, result, error];
 };

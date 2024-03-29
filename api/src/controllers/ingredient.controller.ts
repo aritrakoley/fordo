@@ -45,7 +45,6 @@ export const editIngredient = async (req: Request, res: Response) => {
 };
 
 export const listIngredients = async (req: Request, res: Response) => {
-  console.log({ body: req.body, type: typeof req.body });
   const validation = validate<{ ids: number[] } | {}>(req.body);
 
   if (!validation.success) {
