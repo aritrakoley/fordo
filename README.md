@@ -6,4 +6,7 @@ Simple recipe web app
 
 - Use sequelize
   - Make update and delete queries dynamic instead of using a select query to get data
+  - Remove sql-injection prone code
 - Re-evaluate types used
+- local_names need not be kept in a separate table
+- mask ids for UI

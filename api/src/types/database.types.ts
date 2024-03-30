@@ -68,7 +68,7 @@ export interface TagRow {
   tag_label: string;
 }
 
-export interface TagMapRow {
+export interface RecipeTagMapRow {
   id: number;
   is_active: boolean;
   tag_id: number;
