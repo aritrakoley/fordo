@@ -19,17 +19,15 @@ export const getRecipeDetails = async (request: { id: number }) => {
   return [ok, result, error];
 };
 
-// export const editRecipe = async (request: RecipeUpdateRequest) => {
-//   const recipe: Partial<Recipe> = request;
+export const editRecipe = async (request: RecipeUpdateRequest) => {
+  const [ok, result, error] = await recipeRepository.updateRecipe(request);
+  return [ok, result, error];
+};
 
-//   const [ok, result, error] = await recipeRepository.updateRecipe(recipe);
-//   return [ok, result, error];
-// };
+export const listRecipe = async (request: { ids: number[] }) => {
+  const recipe_ids: number[] = request.ids || [];
 
-// export const listRecipe = async (request: { ids: number[] }) => {
-//   const recipe_ids: number[] = request.ids || [];
+  const [ok, result, error] = await recipeRepository.listRecipe(recipe_ids);
 
-//   const [ok, result, error] = await recipeRepository.listRecipe(recipe_ids);
-
-//   return [ok, result, error];
-// };
+  return [ok, result, error];
+};

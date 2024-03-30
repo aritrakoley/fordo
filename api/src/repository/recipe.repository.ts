@@ -1,6 +1,6 @@
 import { PGSCHEMA } from "../configs/constants";
 import { pool, simpleQuery } from "../db/fordo-db.main";
-import { Recipe } from "../types/recipe.types";
+import { Recipe, RecipeUpdateRequest } from "../types/recipe.types";
 
 export const insertRecipe = async (recipe: Partial<Recipe>) => {
   let ok = true;
@@ -308,138 +308,210 @@ export const getRecipeDetails = async (recipeId: number) => {
   return await simpleQuery(sql, [recipeId]);
 };
 
-// export const updateRecipe = async (recipe: Partial<Recipe>) => {
-//   let ok = true;
-//   let result = null;
-//   let error = null;
+export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
+  let ok = true;
+  let result = null;
+  let error = null;
 
-//   const {
-//     id: recipe_id,
-//     recipe_name,
-//     recipe_details,
-//     linked_recipe,
-//     is_active,
-//     local_names,
-//   } = recipe;
+  const {
+    id: recipe_id,
+    is_active,
+    recipe_name,
+    prep_time,
+    cook_time,
+    calorie_count,
+    serving_size,
+    meal_types,
+    tags,
+    ingredients,
+    steps,
+    notes,
+  } = recipe;
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
 
-//   const client = await pool.connect();
-//   try {
-//     await client.query("BEGIN");
+    const [oldOk, oldRes, oldError] = await getRecipeDetails(recipe_id);
+    const oldRecipe = oldRes?.[0] as unknown as Recipe;
 
-//     // read old recipe
-//     const sqlRead = `
-//       select
-//         id,
-//         recipe_name,
-//         recipe_details,
-//         linked_recipe,
-//         is_active
-//       from
-//         ${PGSCHEMA}.recipe
-//       where
-//         id = $1
-//     `;
-//     const oldRecipe = (await client.query(sqlRead, [recipe_id])).rows[0];
+    if (!oldRecipe) throw "Recipe not found";
 
-//     // update to new values
-//     const sqlUpdate = `
-//       update ${PGSCHEMA}.recipe
-//       set
-//         recipe_name = $2,
-//         recipe_details = $3,
-//         linked_recipe = $4,
-//         is_active = $5
-//       where
-//         id = $1
-//       returning id;
-//     `;
+    const sqlRecipe = `
+      update ${PGSCHEMA}.recipe
+      set
+        recipe_name = $2,
+        prep_time= $3,
+        cook_time= $4,
+        calorie_count= $5,
+        serving_size= $6,
+        is_active= $7
+      where 
+        id = $1
+      returning id;
+    `;
+    const {
+      id,
+      recipe_name,
+      prep_time,
+      cook_time,
+      calorie_count,
+      serving_size,
+      meal_types,
+      tags,
+      ingredients,
+      steps,
+      notes,
+      is_active,
+    } = recipe;
+    const vals = [
+      id,
+      recipe_name || oldRecipe.recipe_name,
+      prep_time || oldRecipe.prep_time,
+      cook_time || oldRecipe.cook_time,
+      calorie_count || oldRecipe.calorie_count,
+      serving_size || oldRecipe.serving_size,
+      typeof is_active === "boolean" ? is_active : oldRecipe.is_active,
+    ];
 
-//     const vals: (string | number | boolean | null)[] = [
-//       recipe_id || oldRecipe.recipe_id,
-//       recipe_name || oldRecipe.recipe_name,
-//       recipe_details || oldRecipe.recipe_details,
-//       linked_recipe || oldRecipe.linked_recipe,
-//       typeof is_active === "boolean" ? is_active : oldRecipe.is_active,
-//     ];
+    await client.query(sqlRecipe, vals);
 
-//     const res = await client.query(sqlUpdate, vals);
+    if (meal_types?.length) {
+      const sqlDisable = `update ${PGSCHEMA}.recipe_meal_type_map set is_active = 0 where recipe_id = $1`;
+      await client.query(sqlDisable, [id]);
 
-//     // If local names were edited, remove old ones and insert new ones
-//     if (local_names?.length) {
-//       const sqlDelLocalNames = `
-//         delete from ${PGSCHEMA}.recipe_local_name
-//         where recipe_id = $1;
-//       `;
+      const valMT = [
+        meal_types.map((mtId) => `('${id}', '${mtId}', true)`).join(","),
+      ];
+      const sqlMT = `
+        insert into ${PGSCHEMA}.recipe_meal_type_map (
+            recipe_id,
+            meal_type_id,
+            is_active
+        ) values ${valMT};
+    `;
 
-//       await client.query(sqlDelLocalNames, [recipe_id]);
+      await client.query(sqlMT);
+    }
 
-//       const valLocalNames = [
-//         local_names.map((l) => `('${res.rows[0].id}', '${l}', true)`).join(","),
-//       ];
+    if (steps?.length) {
+      const sqlDisable = `update ${PGSCHEMA}.recipe_steps set is_active = 0 where recipe_id = $1`;
+      await client.query(sqlDisable, [id]);
 
-//       const sqlLocalNames = `
-//         insert into ${PGSCHEMA}.recipe_local_name (
-//             recipe_id,
-//             local_name,
-//             is_active
-//         ) values ${valLocalNames};
-//       `;
+      const valS = [
+        steps
+          .map(
+            (s) =>
+              `('${id}', '${s.sort_order}', '${s.title}', '${s.body}', true)`
+          )
+          .join(","),
+      ];
+      const sqlS = `
+        insert into ${PGSCHEMA}.recipe_step (
+            recipe_id,
+            sort_order,
+            title,
+            body,
+            is_active
+        ) values ${valS};
+    `;
 
-//       await client.query(sqlLocalNames);
-//     }
+      await client.query(sqlS);
+    }
 
-//     await client.query("COMMIT");
+    if (ingredients?.length) {
+      const sqlDisable = `update ${PGSCHEMA}.recipe_ingredient_map set is_active = 0 where recipe_id = $1`;
+      await client.query(sqlDisable, [id]);
 
-//     result = res.rows[0].id;
-//   } catch (err) {
-//     await client.query("ROLLBACK");
+      const valI = [
+        ingredients
+          .map(
+            (i) => `('${id}', '${i.id}', '${i.quantity}', '${i.unit}', true)`
+          )
+          .join(","),
+      ];
 
-//     ok = false;
-//     error = err;
-//   } finally {
-//     client.release();
-//   }
-//   return [ok, result, error];
-// };
+      const sqlI = `
+        insert into ${PGSCHEMA}.recipe_ingredient_map (
+          recipe_id,
+          ingredient_id,
+          quantity,
+          unit,
+          is_active
+        ) values ${valI};
+      `;
 
-// export const listRecipe = async (recipeIds: number[]) => {
-//   const sql = `
-//     select
-//       id,
-//       recipe_name,
-//       recipe_details,
-//       linked_recipe
-//     from
-//       ${PGSCHEMA}.recipe
-//     where
-//       is_active = true
-//       ${recipeIds?.length ? "and id in ($1)" : ""}
-//     ;
-//   `;
+      await client.query(sqlI);
+    }
 
-//   const val: number[][] = [];
-//   if (recipeIds?.length) val.push(recipeIds);
-//   const [ok, result, error] = await simpleQuery(sql, val);
-//   return [ok, result, error];
-// };
+    if (tags?.length) {
+      const sqlDisable = `update ${PGSCHEMA}.recipe_tag_map set is_active = 0 where recipe_id = $1`;
+      await client.query(sqlDisable, [id]);
 
-// export const getRecipeDetails = async (recipeIds: number[]) => {
-//   const sql = `
-//     select
-//       id,
-//       recipe_name,
-//       recipe_details,
-//       linked_recipe
-//     from
-//       ${PGSCHEMA}.recipe
-//     where
-//       is_active = true
-//       ${recipeIds?.length ? "and id in ($1)" : ""}
-//     ;
-//   `;
+      const valT = [tags.map((tid) => `('${id}', '${tid}', true)`).join(",")];
 
-//   const val: number[][] = [];
-//   if (recipeIds?.length) val.push(recipeIds);
-//   const [ok, result, error] = await simpleQuery(sql, val);
-//   return [ok, result, error];
-// };
+      const sqlT = `
+        insert into ${PGSCHEMA}.recipe_tag_map (
+          recipe_id,
+          tag_id,
+          is_active
+        ) values ${valT};
+      `;
+
+      await client.query(sqlT);
+    }
+
+    // TODO: 'insert multiple notes' should be common function
+    if (notes?.length) {
+      const sqlDisable = `update ${PGSCHEMA}.note set is_active = 0 where recipe_id = $1`;
+      await client.query(sqlDisable, [id]);
+
+      const valN = [
+        notes
+          .map((n) => `('${id}', '${n.title}', '${n.body}', true)`)
+          .join(","),
+      ];
+
+      const sqlN = `
+        insert into ${PGSCHEMA}.note (
+          recipe_id,
+          title,
+          body,
+          is_active
+        ) values ${valN};
+      `;
+
+      await client.query(sqlN);
+    }
+
+    await client.query("COMMIT");
+
+    result = id;
+  } catch (err) {
+    await client.query("ROLLBACK");
+
+    ok = false;
+    error = err;
+  } finally {
+    client.release();
+  }
+  return [ok, result, error];
+};
+
+export const listRecipe = async (ids: number[]) => {
+  const sql = `
+    select 
+      r.id,
+      r.recipe_name,
+      r.prep_time,
+      r.cook_time
+    where 
+      r.is_active = true
+      ${ids?.length ? "and id in ($1)" : ""}
+    ;
+  `;
+
+  const val: number[][] = [];
+  if (ids?.length) val.push(ids);
+  const [ok, result, error] = await simpleQuery(sql, val);
+  return [ok, result, error];
+};

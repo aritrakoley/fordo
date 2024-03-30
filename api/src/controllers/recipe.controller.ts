@@ -45,41 +45,41 @@ export const getRecipeDetails = async (req: Request, res: Response) => {
     .json({ message: "Recipe details fetched successfully", details: result });
 };
 
-// export const editRecipe = async (req: Request, res: Response) => {
-//   const validation = validate<RecipeUpdateRequest>(req.body);
+export const editRecipe = async (req: Request, res: Response) => {
+  const validation = validate<RecipeUpdateRequest>(req.body);
 
-//   if (!validation.success) {
-//     res.status(400).json({ validationErrors: validation.errors });
-//     return;
-//   }
+  if (!validation.success) {
+    res.status(400).json({ validationErrors: validation.errors });
+    return;
+  }
 
-//   const [ok, _result, error] = await recipeService.editRecipe(req.body);
+  const [ok, _result, error] = await recipeService.editRecipe(req.body);
 
-//   if (!ok) {
-//     res.status(500).json({ serverError: error });
-//     return;
-//   }
+  if (!ok) {
+    res.status(500).json({ serverError: error });
+    return;
+  }
 
-//   res.status(200).json({ message: "Recipe updated successfully" });
-// };
+  res.status(200).json({ message: "Recipe updated successfully" });
+};
 
-// export const listRecipes = async (req: Request, res: Response) => {
-//   const validation = validate<{ ids: number[] } | {}>(req.body);
+export const listRecipes = async (req: Request, res: Response) => {
+  const validation = validate<{ ids: number[] } | {}>(req.body);
 
-//   if (!validation.success) {
-//     res.status(400).json({ validationErrors: validation.errors });
-//     return;
-//   }
+  if (!validation.success) {
+    res.status(400).json({ validationErrors: validation.errors });
+    return;
+  }
 
-//   const [ok, result, error] = await recipeService.listRecipe(req.body);
+  const [ok, result, error] = await recipeService.listRecipe(req.body);
 
-//   if (!ok) {
-//     res.status(500).json({ serverError: error });
-//     return;
-//   }
+  if (!ok) {
+    res.status(500).json({ serverError: error });
+    return;
+  }
 
-//   res.status(200).json({
-//     message: "Recipes fetched successfully",
-//     recipes: result,
-//   });
-// };
+  res.status(200).json({
+    message: "Recipes fetched successfully",
+    recipes: result,
+  });
+};
