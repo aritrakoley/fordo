@@ -13,7 +13,9 @@ import { createTag, editTag, listTag } from "../controllers/tag.controller";
 import { createNote, editNote, listNote } from "../controllers/note.controller";
 import {
   createRecipe,
+  editRecipe,
   getRecipeDetails,
+  listRecipes,
 } from "../controllers/recipe.controller";
 
 export const router = Router();
@@ -36,3 +38,5 @@ router.patch("/note/edit", editNote);
 
 router.post("/recipe/create", createRecipe);
 router.post("/recipe/details", getRecipeDetails);
+router.post("/recipe/list", listRecipes);
+router.patch("/recipe/edit", editRecipe);

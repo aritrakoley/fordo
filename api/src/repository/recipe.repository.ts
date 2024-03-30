@@ -333,8 +333,10 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
 
     const [oldOk, oldRes, oldError] = await getRecipeDetails(recipe_id);
     const oldRecipe = oldRes?.[0] as unknown as Recipe;
+    oldRecipe.is_active = true;
 
     if (!oldRecipe) throw "Recipe not found";
+    console.log({ oldRecipe });
 
     const sqlRecipe = `
       update ${PGSCHEMA}.recipe
@@ -374,27 +376,33 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     ];
 
     await client.query(sqlRecipe, vals);
+    console.log({ vals });
 
     if (meal_types?.length) {
-      const sqlDisable = `update ${PGSCHEMA}.recipe_meal_type_map set is_active = 0 where recipe_id = $1`;
+      const sqlDisable = `update ${PGSCHEMA}.recipe_meal_type_map set is_active = false where recipe_id = $1`;
       await client.query(sqlDisable, [id]);
+      console.log("disable MT");
 
       const valMT = [
-        meal_types.map((mtId) => `('${id}', '${mtId}', true)`).join(","),
+        meal_types.map((mtId) => `(${id}, ${mtId}, true)`).join(","),
       ];
+
       const sqlMT = `
         insert into ${PGSCHEMA}.recipe_meal_type_map (
-            recipe_id,
-            meal_type_id,
-            is_active
+          recipe_id,
+          meal_type_id,
+          is_active
         ) values ${valMT};
     `;
 
+      console.log({ sqlMT });
       await client.query(sqlMT);
+      console.log({ valMT });
     }
 
     if (steps?.length) {
-      const sqlDisable = `update ${PGSCHEMA}.recipe_steps set is_active = 0 where recipe_id = $1`;
+      console.log("disable s");
+      const sqlDisable = `update ${PGSCHEMA}.recipe_steps set is_active = false where recipe_id = $1`;
       await client.query(sqlDisable, [id]);
 
       const valS = [
@@ -415,11 +423,12 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
         ) values ${valS};
     `;
 
-      await client.query(sqlS);
+      await client.query(sqlS, valS);
+      console.log({ valS });
     }
 
     if (ingredients?.length) {
-      const sqlDisable = `update ${PGSCHEMA}.recipe_ingredient_map set is_active = 0 where recipe_id = $1`;
+      const sqlDisable = `update ${PGSCHEMA}.recipe_ingredient_map set is_active = false where recipe_id = $1`;
       await client.query(sqlDisable, [id]);
 
       const valI = [
@@ -444,7 +453,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     }
 
     if (tags?.length) {
-      const sqlDisable = `update ${PGSCHEMA}.recipe_tag_map set is_active = 0 where recipe_id = $1`;
+      const sqlDisable = `update ${PGSCHEMA}.recipe_tag_map set is_active = false where recipe_id = $1`;
       await client.query(sqlDisable, [id]);
 
       const valT = [tags.map((tid) => `('${id}', '${tid}', true)`).join(",")];
@@ -462,7 +471,8 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
 
     // TODO: 'insert multiple notes' should be common function
     if (notes?.length) {
-      const sqlDisable = `update ${PGSCHEMA}.note set is_active = 0 where recipe_id = $1`;
+      console.log("b4");
+      const sqlDisable = `update ${PGSCHEMA}.note set is_active = false where recipe_id = $1`;
       await client.query(sqlDisable, [id]);
 
       const valN = [
@@ -481,6 +491,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
       `;
 
       await client.query(sqlN);
+      console.log({ valN });
     }
 
     await client.query("COMMIT");
@@ -504,6 +515,8 @@ export const listRecipe = async (ids: number[]) => {
       r.recipe_name,
       r.prep_time,
       r.cook_time
+    from 
+      ${PGSCHEMA}.recipe r
     where 
       r.is_active = true
       ${ids?.length ? "and id in ($1)" : ""}
