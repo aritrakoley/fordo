@@ -10,3 +10,4 @@ Simple recipe web app
 - Re-evaluate types used
 - local_names need not be kept in a separate table
 - mask ids for UI
+- Figure out image storage techniques
