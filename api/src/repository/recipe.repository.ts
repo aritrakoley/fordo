@@ -14,6 +14,7 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
     const sqlRecipe = `
       insert into ${PGSCHEMA}.recipe(
         recipe_name,
+        description,
         prep_time,
         cook_time,
         calorie_count,
@@ -25,12 +26,14 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
           $3,
           $4,
           $5,
+          $6
           true
       )
       returning id;
     `;
     const {
       recipe_name,
+      description,
       prep_time,
       cook_time,
       calorie_count,
@@ -43,6 +46,7 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
     } = recipe;
     const vals = [
       recipe_name || null,
+      description || null,
       prep_time || null,
       cook_time || null,
       calorie_count || null,
@@ -250,6 +254,7 @@ export const getRecipeDetails = async (recipeId: number) => {
     select 
       r.id,
       r.recipe_name,
+      r.description,
       r.prep_time,
       r.cook_time,
       r.calorie_count,
@@ -317,6 +322,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     id: recipe_id,
     is_active,
     recipe_name,
+    description,
     prep_time,
     cook_time,
     calorie_count,
@@ -342,11 +348,12 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
       update ${PGSCHEMA}.recipe
       set
         recipe_name = $2,
-        prep_time= $3,
-        cook_time= $4,
-        calorie_count= $5,
-        serving_size= $6,
-        is_active= $7
+        description = $3,
+        prep_time= $4,
+        cook_time= $5,
+        calorie_count= $6,
+        serving_size= $7,
+        is_active= $8
       where 
         id = $1
       returning id;
@@ -354,6 +361,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     const {
       id,
       recipe_name,
+      description,
       prep_time,
       cook_time,
       calorie_count,
@@ -368,6 +376,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     const vals = [
       id,
       recipe_name || oldRecipe.recipe_name,
+      description || oldRecipe.description,
       prep_time || oldRecipe.prep_time,
       cook_time || oldRecipe.cook_time,
       calorie_count || oldRecipe.calorie_count,
@@ -513,6 +522,7 @@ export const listRecipe = async (ids: number[]) => {
     select 
       r.id,
       r.recipe_name,
+      r.description,
       r.prep_time,
       r.cook_time
     from 
