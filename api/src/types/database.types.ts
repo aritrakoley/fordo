@@ -2,6 +2,7 @@ export interface RecipeRow {
   id: number;
   is_active: boolean;
   recipe_name: string;
+  description: string;
   prep_time: number;
   cook_time: number;
   calorie_count: number;
