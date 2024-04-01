@@ -1,6 +1,7 @@
 import defaultImage from "../assets/default.png";
 
-type RecipeItemPropType = Partial<{
+type RecipeItemType = Partial<{
+    id: number;
     recipe_name: string | null;
     description: string | null;
     prep_time: number | null,
@@ -8,15 +9,21 @@ type RecipeItemPropType = Partial<{
     calorie_count: number | null,
     serving_size: number | null
 }>;
-const RecipeItem = ({ recipe_name,
-    description,
-    prep_time,
-    cook_time,
-    calorie_count,
-    serving_size
-}: RecipeItemPropType) => {
+
+type RecipeItemPropType = { recipe: RecipeItemType, onClick: (recipeId?: number) => void }
+const RecipeItem = (props: RecipeItemPropType) => {
+    const {
+        id,
+        recipe_name,
+        description,
+        prep_time,
+        cook_time,
+        calorie_count,
+        serving_size,
+    } = props.recipe;
+
     return (
-        <div className="flex items-center space-x-4 text-white">
+        <div className="flex items-center space-x-4 hover:bg-gray-700 active:scale-95 ease-in-out duration-75 bg-slate-700 py-2 px-4 rounded-2xl text-white" onClick={() => props.onClick(id)}>
             <div className="flex-shrink-0">
                 <img className="w-16 h-16 rounded-full" src={defaultImage} alt="default food image" />
             </div>

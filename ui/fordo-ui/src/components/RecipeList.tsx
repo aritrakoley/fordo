@@ -1,13 +1,19 @@
+import { useEffect, useState } from "react";
+import { mockRecipeList } from "../utils/dummy.data"
 import RecipeItem from "./RecipeItem"
 
 const RecipeList = () => {
-    const recipeList = [{
-        "id": 2,
-        "recipe_name": "Mango Shake",
-        "description": null,
-        "prep_time": 600,
-        "cook_time": 120
-    }]
+
+    const [recipeList, setRecipeList] = useState<typeof mockRecipeList>([]);
+    useEffect(() => {
+        setRecipeList(mockRecipeList)
+    }, [])
+
+
+    const handleRecipeItemClick = async (recipeId?: number) => {
+        console.log(recipeId)
+    }
+
     return (
         <>
             <div className="flex flex-col items-center w-full h-[100vh] bg-slate-700 mx-auto">
@@ -22,7 +28,7 @@ const RecipeList = () => {
                         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                             {recipeList?.length
                                 ? recipeList.map(r => <li key={r.id} className="py-3 sm:py-4">
-                                    <RecipeItem {...r} />
+                                    <RecipeItem recipe={r} onClick={handleRecipeItemClick} />
                                 </li>)
                                 : null}
                         </ul>
