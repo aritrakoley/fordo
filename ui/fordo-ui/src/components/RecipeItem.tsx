@@ -1,6 +1,6 @@
 import defaultImage from "../assets/default.png";
 
-type RecipeItemType = Partial<{
+export type RecipeItemType = Partial<{
     id: number;
     recipe_name: string | null;
     description: string | null;

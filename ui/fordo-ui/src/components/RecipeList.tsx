@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { mockRecipeList } from "../utils/dummy.data"
-import RecipeItem from "./RecipeItem"
+import RecipeItem, { RecipeItemType } from "./RecipeItem"
+import { getRecipeList } from "../utils/api.utils";
 
 const RecipeList = () => {
 
-    const [recipeList, setRecipeList] = useState<typeof mockRecipeList>([]);
+    const [recipeList, setRecipeList] = useState<RecipeItemType[]>([]);
     useEffect(() => {
-        setRecipeList(mockRecipeList)
+        getRecipeList().then((res) => setRecipeList(res))
     }, [])
 
 

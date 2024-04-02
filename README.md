@@ -11,3 +11,4 @@ Simple recipe web app
 - local_names need not be kept in a separate table
 - mask ids for UI
 - Figure out image storage techniques
+- configure cors manually instead of using the npm package
