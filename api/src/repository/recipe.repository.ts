@@ -182,8 +182,10 @@ export const getRecipeDetails = async (recipeId: number) => {
       select
         rim.recipe_id,
         i.id,
-        any_value(i.ingredient_name) as ingredient_name ,
-        any_value(i.ingredient_details) as ingredient_details ,
+        any_value(rim.quantity) as quantity,
+        any_value(rim.unit) as unit,
+        any_value(i.ingredient_name) as ingredient_name,
+        any_value(i.ingredient_details) as ingredient_details,
         any_value(i.linked_recipe) as linked_recipe,
         any_value(iln.local_names) as local_names
       from 
@@ -267,12 +269,14 @@ export const getRecipeDetails = async (recipeId: number) => {
       ) as meal_types,
       array_agg( 
         distinct jsonb_build_object(
-          'id',		i.id,
-          'ingredient_name',		i.ingredient_name,
-          'ingredient_details',		i.ingredient_details,
-          'linked_recipe',		i.linked_recipe,
-          'local_names',	i.local_names
-        )
+          'id', i.id,
+          'ingredient_name', i.ingredient_name,
+          'quantity', i.quantity,
+          'unit', i.unit,
+          'ingredient_details', i.ingredient_details,
+          'linked_recipe', i.linked_recipe,
+          'local_names', i.local_names
+        ) 
       ) as ingredients,
       array_agg(
         distinct jsonb_build_object(
@@ -524,7 +528,9 @@ export const listRecipe = async (ids: number[]) => {
       r.recipe_name,
       r.description,
       r.prep_time,
-      r.cook_time
+      r.cook_time,
+      r.serving_size,
+      r.calorie_count
     from 
       ${PGSCHEMA}.recipe r
     where 
