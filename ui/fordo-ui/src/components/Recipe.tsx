@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import defaultImg from '../assets/default_recipe_bg.jpg';
 import { mockRecipe } from '../utils/dummy.data';
+import { getRecipeDetails } from '../utils/api.utils';
 
 type RecipeType = {
   "id": number | null | undefined;
@@ -70,6 +71,12 @@ const closeIcon = (
 type RecipePropType = { recipeId: number; handleClose: () => void };
 const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
   const [recipe, setRecipe] = useState<RecipeType>(mockRecipe);
+
+  useEffect(() => {
+    getRecipeDetails(recipeId).then((recipe) => setRecipe(recipe));
+  }, [recipeId])
+
+  if (!recipe) return null;
   return (
     <div className="flex mx-auto w-full ">
       <div className="relative inline-block w-full shadow p-4 rounded-lg bg-gray-600">
