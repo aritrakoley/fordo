@@ -2,12 +2,17 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import defaultImg from '../assets/default_recipe_bg.jpg';
 import { addIconSmall, clockOutlineIcon, closeIcon, peopleIcon } from './atoms/Icons';
 import { RecipeType } from './Recipe';
-import { createMealType, getMealTypeList } from '../utils/api.utils';
+import { createMealType, createTag, getMealTypeList, getTagList } from '../utils/api.utils';
 
 type RecipeNewPropType = { handleClose: () => void };
 type MealType =  {
     "id": number;
     "meal_type_label": string;
+};
+
+type Tag =  {
+  "id": number;
+  "tag_label": string;
 };
 // const intiRecipe = {
 //     id: "",
@@ -98,15 +103,21 @@ type MealType =  {
 //   };
 const Recipe = ({handleClose}:RecipeNewPropType) => {
   const [primaryImage, setPrimaryImage] = useState(defaultImg);
+  const [recipe, setRecipe] = useState<any>({meal_type:[], tags:[]});
+
   const [mealTypeOptions, setMealTypeOptions] = useState<MealType[]>([]);
-  const [recipe, setRecipe] = useState<any>();
+  const [tagOptions, setTagOptions] = useState<Tag[]>([]);
 
   const newMealType = useRef<HTMLInputElement>(null);
+  const newTag = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     getMealTypeList().then((mealTypes) => {
         setMealTypeOptions(mealTypes)
-    })
+    });
+    getTagList().then((mealTypes) => {
+      setTagOptions(mealTypes)
+  })
   }, []);
   
   const handleRecipeChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -138,6 +149,17 @@ const Recipe = ({handleClose}:RecipeNewPropType) => {
     };
     if (success) {
       setMealTypeOptions((await getMealTypeList()))
+    }
+  }
+
+  const handleNewTag = async () => {
+    let success = false;
+    if(newTag?.current?.value) { 
+      success = await createTag(newTag.current.value) 
+      newTag.current.value = '';
+    };
+    if (success) {
+      setTagOptions((await getTagList()))
     }
   }
 
@@ -208,17 +230,27 @@ const Recipe = ({handleClose}:RecipeNewPropType) => {
             </div>
           </div>
 
-          {/* <div className="flex flex-col xl:items-center text-gray-100">
-            <div className='text-2xl'>Tags:</div>
+          <div className="w-full flex flex-col xl:items-center text-gray-100  ">
+            <div className='text-2xl'>Tag:</div>
             <div>
               <ul>
                 {
-                  recipe.tags?.length
-                    ? recipe.tags.map(t => <li key={t.id} className="capitalize">{t.label}</li>)
+                  tagOptions?.length
+                    ? tagOptions.map(t => (
+                        <li key={t.id} className="capitalize">
+                            <input type="checkbox" id="tag" name="tag" checked={recipe?.meal_type?.[`${t.id},${t.tag_label}`] || false} value={`${t.id},${t.tag_label}`} onChange={handleRecipeChange} />
+                            <label htmlFor="tag" className="text-sm font-medium text-gray-200"> {t.tag_label} </label>
+                        </li>)
+                        )
                     : null
                 }
               </ul>
-            </div> */}
+              <div className="flex  items-center text-gray-100">
+                <label htmlFor="newTag" className="block text-sm font-medium text-gray-200 mr-2"> New Tag: </label>
+                <input ref={newTag} type="text" id="newTag" name="newTag" className="w-[50%] h-8 rounded-md text-gray-700 text-2xl" />
+                <div className='ml-2' onClick={handleNewTag}>{addIconSmall}</div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -235,9 +267,9 @@ const Recipe = ({handleClose}:RecipeNewPropType) => {
                 : null
             }
           </ul>
-        </div>
+        </div> */}
 
-        <div className="mt-10 flow-root">
+        {/* <div className="mt-10 flow-root">
           <div className='text-2xl text-gray-100'>Steps:</div>
           <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
             {
@@ -249,11 +281,11 @@ const Recipe = ({handleClose}:RecipeNewPropType) => {
                 : null
             }
           </ul>
-        </div>
+        </div> */}
 
 
 
-        <div className="mt-10 flow-root">
+        {/* <div className="mt-10 flow-root">
           <div className='text-2xl text-gray-100'>Notes:</div>
           <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
             {
@@ -265,8 +297,10 @@ const Recipe = ({handleClose}:RecipeNewPropType) => {
                 : null
             }
           </ul>
-        </div> 
-      </div> */}
+        </div>  */}
+
+
+      </div> 
     </div >
   )
 }

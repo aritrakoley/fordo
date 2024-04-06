@@ -59,3 +59,35 @@ export const createMealType = async (meal_type_label: string) => {
   console.log(resBody);
   return success;
 };
+
+
+export const getTagList = async () => {
+  const baseUrl = import.meta.env.API_BASE_URL;
+  console.log(baseUrl);
+  const res = await (
+    await fetch(`http://localhost:3000/tag/list`, {
+      method: "POST"
+    })
+  ).json();
+  console.log(res.tags);
+  return res.tags;
+};
+
+
+export const createTag = async (tag_label: string) => {
+  const baseUrl = import.meta.env.API_BASE_URL;
+  console.log(baseUrl);
+  
+  const res = 
+    await fetch(`http://localhost:3000/tag/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tag_label  }),
+    })
+  const success = res.status === 200;
+  const resBody = await res.json();
+  console.log(resBody);
+  return success;
+};
