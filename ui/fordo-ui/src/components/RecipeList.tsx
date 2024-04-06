@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import RecipeItem, { RecipeItemType } from "./RecipeItem"
 import { getRecipeList } from "../utils/api.utils";
 import Recipe from "./Recipe";
+import RecipeNew from "./RecipeNew";
+import { addIcon } from "./atoms/Icons";
 
 const RecipeList = () => {
 
   const [recipeList, setRecipeList] = useState<RecipeItemType[]>([]);
-  const [isRecipeOpen, setIsRecipeOpen] = useState<boolean>(false);
+
+  const [openPage, setOpenPage] = useState<string>("recipe_add");
   const [openRecipeId, setOpenRecipeId] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
@@ -16,22 +19,30 @@ const RecipeList = () => {
 
   const handleRecipeItemClick = async (recipeId?: number) => {
     setOpenRecipeId(recipeId);
-    setIsRecipeOpen(true);
+    setOpenPage("recipe_details");
   }
 
-  const handleRecipeDetailsClose = async () => {
+  const handleRecipeAddClick = async () => {
+    setOpenPage("recipe_add");
     setOpenRecipeId(null);
-    setIsRecipeOpen(false);
+  }
+
+  const handlePageClose = async () => {
+    setOpenRecipeId(null);
+    setOpenPage("recipe_list");
     console.log({
-      isRecipeOpen,
+      openPage,
       openRecipeId
     })
   }
 
+
+
   const list = (
     <>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Recipes</h3>
+        <h3 className="text-4xl font-bold leading-none text-gray-900 dark:text-white">Recipes</h3>
+        <div className="rounded-full bg-gray-700/70 m-2 top-0 right-0 text-white z-10 text-2xl" onClick={handleRecipeAddClick} >{addIcon}</div>
       </div>
 
       <div className="flow-root">
@@ -52,10 +63,20 @@ const RecipeList = () => {
         <h1 className="text-9xl mb-4 text-slate-300">Fordo</h1>
         <div className="p-4 min-w-[70%] max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
+        {
+            openPage ==="recipe_list"
+              ? list
+              : null
+          }
           {
-            isRecipeOpen && openRecipeId
-              ? <Recipe recipeId={openRecipeId} handleClose={handleRecipeDetailsClose} />
-              : list
+            openPage ==="recipe_details" && openRecipeId
+              ? <Recipe recipeId={openRecipeId} handleClose={handlePageClose} />
+              : null
+          }
+          {
+            openPage === "recipe_add"
+              ? <RecipeNew handleClose={handlePageClose} />
+              : null
           }
         </div>
 

@@ -12,3 +12,4 @@ Simple recipe web app
 - mask ids for UI
 - Figure out image storage techniques
 - configure cors manually instead of using the npm package
+- Choose a form handling library
