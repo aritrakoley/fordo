@@ -8,7 +8,9 @@ import {
 } from "./atoms/Icons";
 import {
   createMealType,
+  createRecipe,
   createTag,
+  formDataToRecipePayload,
   getIngredientList,
   getMealTypeList,
   getTagList,
@@ -177,7 +179,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
             },
           };
           break;
-        
+
         case "tag":
           newState = {
             ...prev,
@@ -302,13 +304,23 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
     });
   };
 
-  const handleSaveRecipe = () => {
+  const handleSaveRecipe = async () => {
     console.log("============ Recipe To Save ============");
     console.log(recipe);
-    console.log(JSON.stringify(recipe,null,2));
+    console.log(JSON.stringify(recipe, null, 2));
     console.log("========================================");
+
+    const payload = formDataToRecipePayload(recipe);
+    console.log("============ Payload To Send ============");
+    console.log(JSON.stringify(payload, null, 2));
+    console.log("========================================");
+
+    const success = await createRecipe(payload);
+    if (success) {
+      handleClose();
+    }
   };
-  console.log({ recipe });
+  
   return (
     <div className="flex mx-auto w-full ">
       <div className="relative inline-block w-full shadow p-4 rounded-lg bg-gray-600">
@@ -375,6 +387,23 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                   onChange={handleRecipeChange}
                 />
               </p>
+
+              <p className="flex space-between items-center font-medium text-gray-200">
+                <label
+                  htmlFor="calorie_count"
+                  className="block text-sm font-medium text-gray-200"
+                >
+                  Calorie Count {peopleIcon}
+                </label>
+                <input
+                  type="number"
+                  id="calorie_count"
+                  name="calorie_count"
+                  className="w-10 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  value={recipe?.calorie_count || ""}
+                  onChange={handleRecipeChange}
+                />
+              </p>
             </div>
           </div>
         </div>
@@ -421,12 +450,8 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                           type="checkbox"
                           id="meal_type"
                           name="meal_type"
-                          checked={
-                            recipe?.meal_type?.[
-                              `${mt.id},${mt.meal_type_label}`
-                            ] || false
-                          }
-                          value={`${mt.id},${mt.meal_type_label}`}
+                          checked={recipe?.meal_type?.[mt.id] || false}
+                          value={mt.id}
                           onChange={handleRecipeChange}
                         />
                         <label
@@ -472,10 +497,9 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                           id="tag"
                           name="tag"
                           checked={
-                            recipe?.tags?.[`${t.id},${t.tag_label}`] ||
-                            false
+                            recipe?.tags?.[t.id] || false
                           }
-                          value={`${t.id},${t.tag_label}`}
+                          value={t.id}
                           onChange={handleRecipeChange}
                         />
                         <label

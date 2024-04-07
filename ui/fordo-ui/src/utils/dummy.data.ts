@@ -122,12 +122,12 @@ export const mockRecipe = {
 
 export const newRecipeFormat = {
   meal_type: {
-    "5,dinner": true,
-    "4,lunch": true,
+    "5": true,
+    "4": true,
   },
   tags: {
-    "2,sweet": true,
-    "3,snack": true,
+    "2": true,
+    "3": true,
   },
   ingredients: {
     "1": {
@@ -179,4 +179,10 @@ export const newRecipeFormat = {
   },
   recipe_name: "Pie",
   description: "It's a pie",
+  prep_time: "3",
+  cook_time: "3",
+  serving_size: "2",
+  calorie_count: "1",
 };
+
+

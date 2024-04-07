@@ -26,7 +26,7 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
           $3,
           $4,
           $5,
-          $6
+          $6,
           true
       )
       returning id;

@@ -9,7 +9,7 @@ const RecipeList = () => {
 
   const [recipeList, setRecipeList] = useState<RecipeItemType[]>([]);
 
-  const [openPage, setOpenPage] = useState<string>("recipe_add");
+  const [openPage, setOpenPage] = useState<string>("recipe_list");
   const [openRecipeId, setOpenRecipeId] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
