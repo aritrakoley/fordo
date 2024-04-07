@@ -61,7 +61,7 @@ const RecipeList = () => {
     <>
       <div className="flex flex-col items-center w-full min-h-[100vh] h-fit bg-slate-700 mx-auto">
         <h1 className="text-9xl mb-4 text-slate-300">Fordo</h1>
-        <div className="p-4 min-w-[70%] max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-4 max-w-[80rem] bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
         {
             openPage ==="recipe_list"

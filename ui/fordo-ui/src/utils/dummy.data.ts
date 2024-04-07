@@ -119,3 +119,64 @@ export const mockRecipe = {
     },
   ],
 };
+
+export const newRecipeFormat = {
+  meal_type: {
+    "5,dinner": true,
+    "4,lunch": true,
+  },
+  tags: {
+    "2,sweet": true,
+    "3,snack": true,
+  },
+  ingredients: {
+    "1": {
+      id: 1,
+      label: "water",
+      quantity: "1",
+      unit: "litre",
+    },
+    "2": {
+      id: 2,
+      label: "table salt",
+      quantity: "100",
+      unit: "g",
+    },
+    "5": {
+      id: 5,
+      label: "white sugar",
+      quantity: "1",
+      unit: "Kg",
+    },
+    "7": {
+      id: 7,
+      label: "wheat flour",
+      quantity: "2",
+      unit: "Kg",
+    },
+    "10": {
+      id: 10,
+      label: "egg",
+      quantity: "6",
+      unit: "pieces",
+    },
+  },
+  recipe_steps: {
+    "1": {
+      title: "Mix ingredients",
+      body: "Mix all the ingredients",
+    },
+    "2": {
+      title: "Bake Pie",
+      body: "Bake all the pies",
+    },
+  },
+  notes: {
+    "1": {
+      title: "Is Note",
+      body: "Yes, is very note",
+    },
+  },
+  recipe_name: "Pie",
+  description: "It's a pie",
+};

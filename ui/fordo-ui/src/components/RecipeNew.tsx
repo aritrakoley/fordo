@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import defaultImg from "../assets/default_recipe_bg.jpg";
 import {
   addIconSmall,
@@ -125,6 +125,8 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
     meal_type: {},
     tags: {},
     ingredients: {},
+    recipe_steps: {},
+    notes: {},
   });
 
   const [mealTypeOptions, setMealTypeOptions] = useState<MealType[]>([]);
@@ -137,6 +139,12 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
 
   const newMealType = useRef<HTMLInputElement>(null);
   const newTag = useRef<HTMLInputElement>(null);
+
+  const newStepTitle = useRef<HTMLInputElement>(null);
+  const newStepBody = useRef<HTMLTextAreaElement>(null);
+
+  const newNoteTitle = useRef<HTMLInputElement>(null);
+  const newNoteBody = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     getMealTypeList().then((mealTypes) => {
@@ -159,7 +167,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
     setRecipe((prev: any) => {
       console.log({ prev });
       let newState;
-      switch (e.target.name.split('-')[0]) {
+      switch (e.target.name.split("-")[0]) {
         case "meal_type":
           newState = {
             ...prev,
@@ -169,14 +177,24 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
             },
           };
           break;
+        
+        case "tag":
+          newState = {
+            ...prev,
+            tags: {
+              ...prev.tags,
+              [e.target.value]: !prev.tags[e.target.value],
+            },
+          };
+          break;
 
-        case 'ingredient':
-          const [id, field] = e.target.name.split('-')[1].split('_');
+        case "ingredient":
+          const [id, field] = e.target.name.split("-")[1].split("_");
           newState = {
             ...prev,
             ingredients: {
               ...prev.ingredients,
-              [id]: { ...prev.ingredients[id], [field]: e.target.value},
+              [id]: { ...prev.ingredients[id], [field]: e.target.value },
             },
           };
           break;
@@ -221,10 +239,75 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
   const handleIngredientMap = (i: Ingredient) => {
     setRecipe((prev: any) => ({
       ...prev,
-      ingredients: { ...prev.ingredients, [i.id]: { id: i.id, label: i.ingredient_name, quantity: 0, unit: "" } },
+      ingredients: {
+        ...prev.ingredients,
+        [i.id]: { id: i.id, label: i.ingredient_name, quantity: 0, unit: "" },
+      },
     }));
   };
 
+  const handleNewStep = (e: MouseEvent<HTMLButtonElement>) => {
+    if (!newStepTitle?.current?.value && !newStepBody?.current?.value) return;
+
+    const keys = Object.keys(recipe.recipe_steps).map((e) => parseInt(e));
+    const order = keys.length ? Math.max(...keys) : 0;
+    console.log(Object.keys(recipe.recipe_steps).map((e) => parseInt(e)));
+    setRecipe((prev: any) => ({
+      ...prev,
+      recipe_steps: {
+        ...prev.recipe_steps,
+        [order + 1]: {
+          title: newStepTitle?.current?.value,
+          body: newStepBody?.current?.value,
+        },
+      },
+    }));
+  };
+
+  const handleRemoveStep = (key: number) => {
+    setRecipe((prev: any) => {
+      const { [key]: _, ...rest } = prev.recipe_steps;
+      return {
+        ...prev,
+        recipe_steps: rest,
+      };
+    });
+  };
+
+  const handleNewNote = (e: MouseEvent<HTMLButtonElement>) => {
+    if (!newNoteTitle?.current?.value && !newNoteBody?.current?.value) return;
+
+    const keys = Object.keys(recipe.notes).map((e) => parseInt(e));
+    const order = keys.length ? Math.max(...keys) : 0;
+    console.log(Object.keys(recipe.notes).map((e) => parseInt(e)));
+    setRecipe((prev: any) => ({
+      ...prev,
+      notes: {
+        ...prev.notes,
+        [order + 1]: {
+          title: newNoteTitle?.current?.value,
+          body: newNoteBody?.current?.value,
+        },
+      },
+    }));
+  };
+
+  const handleRemoveNote = (key: number) => {
+    setRecipe((prev: any) => {
+      const { [key]: _, ...rest } = prev.notes;
+      return {
+        ...prev,
+        notes: rest,
+      };
+    });
+  };
+
+  const handleSaveRecipe = () => {
+    console.log("============ Recipe To Save ============");
+    console.log(recipe);
+    console.log(JSON.stringify(recipe,null,2));
+    console.log("========================================");
+  };
   console.log({ recipe });
   return (
     <div className="flex mx-auto w-full ">
@@ -389,7 +472,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                           id="tag"
                           name="tag"
                           checked={
-                            recipe?.meal_type?.[`${t.id},${t.tag_label}`] ||
+                            recipe?.tags?.[`${t.id},${t.tag_label}`] ||
                             false
                           }
                           value={`${t.id},${t.tag_label}`}
@@ -509,7 +592,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
             </div>
           </div>
         </div>
-        
+
         <div className="flow-root">
           <ul
             role="list"
@@ -517,78 +600,188 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
           >
             {recipe?.ingredients
               ? Object.keys(recipe.ingredients).map((i: any, idx: number) => {
-                const ing = recipe.ingredients[i];
-                return (
-                  <li
-                    key={ing.id}
-                    className="w-full flex items-center space-x-4 border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
-                  >
-                    <div className="capitalize">{idx + 1}. {ing.label}:</div>
-                    <div className="flex space-between items-center font-medium text-gray-200">
-                      <label
-                        htmlFor={`ingredient-${ing.id}_quantity`}
-                        className="block text-sm font-medium text-gray-200"
-                      >
-                       Quantity:
-                      </label>
-                      <input
-                        type="number"
-                        id={`ingredient-${ing.id}_quantity`}
-                        name={`ingredient-${ing.id}_quantity`}
-                        className="w-16 h-6  ml-2 rounded-md text-gray-700 text-xl"
-                        value={ing.quantity || ""}
-                        onChange={handleRecipeChange}
-                      />
-                    </div>
-                    <div className="flex space-between items-center font-medium text-gray-200">
-                      <label
-                        htmlFor={`ingredient-${ing.id}_unit`}
-                        className="block text-sm font-medium text-gray-200"
-                      >
-                       Unit:
-                      </label>
-                      <input
-                        type="text"
-                        id={`ingredient-${ing.id}_unit`}
-                        name={`ingredient-${ing.id}_unit`}
-                        className="w-16 h-6 ml-2 rounded-md text-gray-700 text-xl"
-                        value={ing.unit || ""}
-                        onChange={handleRecipeChange}
-                      />
-                    </div>
-                   
-                  </li>
-                )
-              })
+                  const ing = recipe.ingredients[i];
+                  return (
+                    <li
+                      key={ing.id}
+                      className="w-full flex items-center space-x-4 border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                    >
+                      <div className="capitalize">
+                        {idx + 1}. {ing.label}:
+                      </div>
+                      <div className="flex space-between items-center font-medium text-gray-200">
+                        <label
+                          htmlFor={`ingredient-${ing.id}_quantity`}
+                          className="block text-sm font-medium text-gray-200"
+                        >
+                          Quantity:
+                        </label>
+                        <input
+                          type="number"
+                          id={`ingredient-${ing.id}_quantity`}
+                          name={`ingredient-${ing.id}_quantity`}
+                          className="w-16 h-6  ml-2 rounded-md text-gray-700 text-xl"
+                          value={ing.quantity || ""}
+                          onChange={handleRecipeChange}
+                        />
+                      </div>
+                      <div className="flex space-between items-center font-medium text-gray-200">
+                        <label
+                          htmlFor={`ingredient-${ing.id}_unit`}
+                          className="block text-sm font-medium text-gray-200"
+                        >
+                          Unit:
+                        </label>
+                        <input
+                          type="text"
+                          id={`ingredient-${ing.id}_unit`}
+                          name={`ingredient-${ing.id}_unit`}
+                          className="w-16 h-6 ml-2 rounded-md text-gray-700 text-xl"
+                          value={ing.unit || ""}
+                          onChange={handleRecipeChange}
+                        />
+                      </div>
+                    </li>
+                  );
+                })
               : null}
           </ul>
         </div>
-        {/* <div className="mt-10 flow-root">
-          <div className='text-2xl text-gray-100'>Steps:</div>
-          <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-            {
-              recipe.steps?.length
-                ? recipe.steps.map(s => <li key={s.id}
-                  className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200">
-                  <span className='capitalize'>{s.sort_order}. {s.title}: <br />{s.body}</span>
-                </li>)
-                : null
-            }
+
+        <div className="mt-8 flow-root">
+          <div className="text-2xl text-gray-100">Steps:</div>
+          <ul
+            role="list"
+            className="divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            {recipe?.recipe_steps
+              ? Object.keys(recipe.recipe_steps).map((skey, idx) => (
+                  <li
+                    key={skey}
+                    className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                  >
+                    <div className="capitaliz flex w-full">
+                      <div className="text-4xl pr-4">{idx + 1} </div>
+                      <div className="capitaliz flex flex-col flex-grow">
+                        <p className="font-bold">
+                          {recipe.recipe_steps[skey].title}
+                        </p>
+                        <p>{recipe.recipe_steps[skey].body}</p>
+                      </div>
+                      <div onClick={() => handleRemoveStep(parseInt(skey))}>
+                        {closeIcon}
+                      </div>
+                    </div>
+                  </li>
+                ))
+              : null}
           </ul>
-        </div> */}
-        {/* <div className="mt-10 flow-root">
-          <div className='text-2xl text-gray-100'>Notes:</div>
-          <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-            {
-              recipe.notes?.length
-                ? recipe.notes.map(n => <li key={n.id}
-                  className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200">
-                  <span className='capitalize'>{n.title} <br />{n.body}</span>
-                </li>)
-                : null
-            }
+          <div className="mt-4">
+            <label
+              htmlFor="step-title"
+              className="block text-sm font-medium text-gray-200"
+            >
+              Step Title:
+            </label>
+            <input
+              ref={newStepTitle}
+              type="text"
+              id="step-title"
+              name="step-title"
+              className="w-full rounded-md text-gray-700 text-4xl"
+            />
+            <p className="mt-2 text-md text-gray-400">
+              <label
+                htmlFor="step-body"
+                className="block text-sm font-medium text-gray-200"
+              >
+                Step Details:
+              </label>
+              <textarea
+                ref={newStepBody}
+                id="step-body"
+                name="step-body"
+                className="w-full rounded-md text-gray-700 text-4xl"
+              ></textarea>
+            </p>
+            <button
+              className="w-full rounded-lg bg-slate-200 active:scale-95 ease-in-out duration-75 "
+              onClick={handleNewStep}
+            >
+              Add Step
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-8 flow-root">
+          <div className="text-2xl text-gray-100">Notes:</div>
+          <ul
+            role="list"
+            className="divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            {recipe?.notes
+              ? Object.keys(recipe.notes).map((nkey, idx) => (
+                  <li
+                    key={nkey}
+                    className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                  >
+                    <div className="capitaliz flex w-full">
+                      <div className="text-4xl pr-4">{idx + 1} </div>
+                      <div className="capitaliz flex flex-col flex-grow">
+                        <p className="font-bold">{recipe.notes[nkey].title}</p>
+                        <p>{recipe.notes[nkey].body}</p>
+                      </div>
+                      <div onClick={() => handleRemoveNote(parseInt(nkey))}>
+                        {closeIcon}
+                      </div>
+                    </div>
+                  </li>
+                ))
+              : null}
           </ul>
-        </div>  */}
+          <div className="mt-4">
+            <label
+              htmlFor="step-title"
+              className="block text-sm font-medium text-gray-200"
+            >
+              Note Title:
+            </label>
+            <input
+              ref={newNoteTitle}
+              type="text"
+              id="step-title"
+              name="step-title"
+              className="w-full rounded-md text-gray-700 text-4xl"
+            />
+            <p className="mt-2 text-md text-gray-400">
+              <label
+                htmlFor="step-body"
+                className="block text-sm font-medium text-gray-200"
+              >
+                Note Body:
+              </label>
+              <textarea
+                ref={newNoteBody}
+                id="step-body"
+                name="step-body"
+                className="w-full rounded-md text-gray-700 text-4xl"
+              ></textarea>
+            </p>
+            <button
+              className="w-full rounded-lg bg-slate-200 active:scale-95 ease-in-out duration-75 "
+              onClick={handleNewNote}
+            >
+              Add Note
+            </button>
+          </div>
+
+          <button
+            className="w-full h-10 mt-6 font-bold rounded-lg bg-lime-500 active:scale-95 ease-in-out duration-75 "
+            onClick={handleSaveRecipe}
+          >
+            Save Recipe
+          </button>
+        </div>
       </div>
     </div>
   );
