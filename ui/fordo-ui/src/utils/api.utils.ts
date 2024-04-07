@@ -91,3 +91,17 @@ export const createTag = async (tag_label: string) => {
   console.log(resBody);
   return success;
 };
+
+
+export const getIngredientList = async () => {
+  const baseUrl = import.meta.env.API_BASE_URL;
+  console.log(baseUrl);
+  const res = await (
+    await fetch(`http://localhost:3000/ingredient/list`, {
+      method: "POST"
+    })
+  ).json();
+  console.log(res.ingredients);
+  return res.ingredients;
+};
+

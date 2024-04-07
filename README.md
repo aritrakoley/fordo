@@ -13,3 +13,4 @@ Simple recipe web app
 - Figure out image storage techniques
 - configure cors manually instead of using the npm package
 - Choose a form handling library
+- Add error handling to api utils (ui)
