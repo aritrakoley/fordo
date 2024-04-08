@@ -10,6 +10,7 @@ import {
   createMealType,
   createRecipe,
   createTag,
+  editRecipe,
   formDataToRecipePayload,
   getIngredientList,
   getMealTypeList,
@@ -323,7 +324,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
     console.log(JSON.stringify(payload, null, 2));
     console.log("========================================");
 
-    const success = await createRecipe(payload);
+    const success = recipeId ? await editRecipe(payload) : await createRecipe(payload);
     if (success) {
       handleClose();
     }

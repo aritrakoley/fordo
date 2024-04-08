@@ -69,6 +69,7 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
         ) values ${valMT};
     `;
 
+    console.log({valMT})
       await client.query(sqlMT);
     }
 
@@ -415,7 +416,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
 
     if (steps?.length) {
       console.log("disable s");
-      const sqlDisable = `update ${PGSCHEMA}.recipe_steps set is_active = false where recipe_id = $1`;
+      const sqlDisable = `update ${PGSCHEMA}.recipe_step set is_active = false where recipe_id = $1;`;
       await client.query(sqlDisable, [id]);
 
       const valS = [
@@ -435,8 +436,8 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
             is_active
         ) values ${valS};
     `;
-
-      await client.query(sqlS, valS);
+    console.log(sqlS)
+      await client.query(sqlS);
       console.log({ valS });
     }
 
@@ -513,6 +514,7 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
   } catch (err) {
     await client.query("ROLLBACK");
 
+    console.log(err)
     ok = false;
     error = err;
   } finally {

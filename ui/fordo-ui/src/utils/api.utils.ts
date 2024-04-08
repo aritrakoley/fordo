@@ -115,6 +115,24 @@ export const createRecipe = async (recipe: any) => {
   return success;
 };
 
+
+export const editRecipe = async (recipe: any) => {
+  const baseUrl = import.meta.env.API_BASE_URL;
+  console.log(baseUrl);
+
+  const res = await fetch(`http://localhost:3000/recipe/edit`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(recipe),
+  });
+  const success = res.status === 200;
+  const resBody = await res.json();
+  console.log(resBody);
+  return success;
+};
+
 export const formDataToRecipePayload = (formData: any) => {
   let formIngredients;
   let formSteps;
@@ -166,6 +184,7 @@ export const formDataToRecipePayload = (formData: any) => {
   }
 
   const recipePayload = {
+    id: formData?.id || undefined,
     recipe_name: formData?.recipe_name || null,
     description: formData?.description || null,
     prep_time: formData?.prep_time ? parseInt(formData.prep_time) * 60 : null,
@@ -187,63 +206,62 @@ export const formDataToRecipePayload = (formData: any) => {
 };
 
 export const recipeResponseToFormData = (recipeData: any) => {
-  let recipeIngredients:any = {};
-  let recipeSteps:any = {};
-  let recipeNotes:any = {};
-  let recipeMealTypes:any = {};
-  let recipeTags:any = {};
+  let recipeIngredients: any = {};
+  let recipeSteps: any = {};
+  let recipeNotes: any = {};
+  let recipeMealTypes: any = {};
+  let recipeTags: any = {};
 
   if (recipeData?.ingredients) {
-    recipeIngredients = [];
     for (const i of recipeData.ingredients) {
-      recipeIngredients[i.id.toString() as string] = {
+      recipeIngredients[i.id.toString()] = {
         id: i.id.toString(),
         label: i.ingredient_name || null,
         quantity: i.quantity || null,
         unit: i.unit || null,
-      }
+      };
+    }
+  }
+  if (recipeData?.ingredients) {
+    for (const step of recipeData.steps) {
+      recipeSteps[step.sort_order.toString()] = {
+        // id: step.id.toString(),
+        title: step.title || null,
+        body: step.body || null,
+      };
     }
   }
 
-  // if (recipeData?.recipe_steps) {
-  //   recipeSteps = [];
-  //   for (const id in recipeData.recipe_steps) {
-  //     recipeSteps.push({ ...recipeData.recipe_steps[id], sort_order: id });
-  //   }
-  //   recipeSteps.sort((a, b) => a.sort_order - b.sort_order);
-  //   for (let i = 0; i < recipeSteps.length; i++)
-  //     recipeSteps[i].sort_order = i + 1;
-  // }
+  if (recipeData?.notes) {
+    for (const note of recipeData.notes) {
+      recipeNotes[note.id.toString()] = {
+        title: note.title || null,
+        body: note.body || null,
+      };
+    }
+  }
 
-  // if (recipeData?.notes) {
-  //   recipeNotes = [];
-  //   for (const id in recipeData.notes) {
-  //     recipeNotes.push({ ...recipeData.notes[id] });
-  //   }
-  // }
+  if (recipeData?.meal_types) {
+    for (const mealType of recipeData.meal_types) {
+      recipeMealTypes[mealType.id.toString()] = true;
+    }
+  }
 
-  // if (recipeData?.meal_types) {
-  //   recipeMealTypes = [];
-  //   for (const id in recipeData.meal_types) {
-  //     if (recipeData.meal_types[id]) recipeMealTypes.push(parseInt(id));
-  //   }
-  // }
-
-  // if (recipeData?.tags) {
-  //   recipeTags = [];
-  //   for (const id in recipeData.tags) {
-  //     if (recipeData.tags[id]) recipeTags.push(parseInt(id));
-  //   }
-  // }
+  if (recipeData?.tags) {
+    for (const tag of recipeData.tags) {
+      if (tag.id) recipeTags[tag.id.toString()] = true;
+    }
+  }
 
   const formData = {
+    id: recipeData?.id || undefined,
     recipe_name: recipeData?.recipe_name || null,
     description: recipeData?.description || null,
     prep_time: recipeData?.prep_time
       ? (parseInt(recipeData.prep_time) / 60).toFixed(0)
       : null,
     cook_time: recipeData?.cook_time
-      ?( parseInt(recipeData.cook_time) / 60).toFixed(0)
+      ? (parseInt(recipeData.cook_time) / 60).toFixed(0)
       : null,
     serving_size: recipeData?.serving_size
       ? parseInt(recipeData.serving_size)
@@ -252,11 +270,12 @@ export const recipeResponseToFormData = (recipeData: any) => {
       ? parseFloat(recipeData.calorie_count)
       : null,
     ingredients: recipeIngredients,
-    steps: recipeSteps,
+    recipe_steps: recipeSteps,
     notes: recipeNotes,
     meal_types: recipeMealTypes,
     tags: recipeTags,
   };
 
+  console.log(JSON.stringify(formData, null, 2));
   return formData;
 };

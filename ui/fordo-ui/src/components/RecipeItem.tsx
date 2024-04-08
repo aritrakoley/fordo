@@ -30,7 +30,10 @@ const RecipeItem = (props: RecipeItemPropType) => {
   return (
     <div
       className="flex items-center space-x-4 hover:bg-gray-700 active:scale-95 ease-in-out duration-75 bg-slate-700 py-2 px-4 rounded-2xl text-white"
-      onClick={() => props.handleClick(id)}
+      onClick={(e) => {
+        // console.log('parent',e.currentTarget === e.target, e.currentTarget, e.target)
+        if (e.currentTarget === e.target) props.handleClick(id);
+      }}
     >
       <div className="flex-shrink-0">
         <img
@@ -55,15 +58,16 @@ const RecipeItem = (props: RecipeItemPropType) => {
         Prep Time: {prep_time}
         <br />
         Cook Time: {cook_time}
-        <div
-          className="rounded-full bg-yellow-400/30 m-2 p-2 text-white z-10 text-2xl"
-          onClick={(e) => {
-            e.stopPropagation();
-            props.handleEdit(id);
-          }}
-        >
-          {pencilIcon}
-        </div>
+      </div>
+      <div
+        className="w-16 h-16 flex items-center justify-center rounded-full bg-yellow-400/30 text-white z-10 text-2xl"
+        onClick={(e) => {
+          e.stopPropagation();
+        //   console.log('child',e.currentTarget === e.target, e.currentTarget, e.target)
+          props.handleEdit(id);
+        }}
+      >
+        {pencilIcon}
       </div>
     </div>
   );
