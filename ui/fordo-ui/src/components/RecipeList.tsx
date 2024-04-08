@@ -27,6 +27,12 @@ const RecipeList = () => {
     setOpenRecipeId(null);
   }
 
+  const handleRecipeEditClick = async (recipeId?: number) => {
+    
+    setOpenRecipeId(recipeId);
+    setOpenPage("recipe_edit");
+  }
+
   const handlePageClose = async () => {
     setOpenRecipeId(null);
     setOpenPage("recipe_list");
@@ -49,7 +55,7 @@ const RecipeList = () => {
         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
           {recipeList?.length
             ? recipeList.map(r => <li key={r.id} className="py-3 sm:py-4">
-              <RecipeItem recipe={r} onClick={handleRecipeItemClick} />
+              <RecipeItem recipe={r} handleClick={handleRecipeItemClick} handleEdit={handleRecipeEditClick}/>
             </li>)
             : null}
         </ul>
@@ -57,11 +63,12 @@ const RecipeList = () => {
     </>
   );
 
+  console.log(openPage, openRecipeId)
   return (
     <>
       <div className="flex flex-col items-center w-full min-h-[100vh] h-fit bg-slate-700 mx-auto">
         <h1 className="text-9xl mb-4 text-slate-300">Fordo</h1>
-        <div className="p-4 max-w-[80rem] bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-4 w-[80%] max-w-[80rem] bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
         {
             openPage ==="recipe_list"
@@ -75,7 +82,12 @@ const RecipeList = () => {
           }
           {
             openPage === "recipe_add"
-              ? <RecipeNew handleClose={handlePageClose} />
+              ? <RecipeNew recipeId={null} handleClose={handlePageClose} />
+              : null
+          }
+          {
+            openPage === "recipe_edit"
+              ? <RecipeNew recipeId={openRecipeId} handleClose={handlePageClose} />
               : null
           }
         </div>

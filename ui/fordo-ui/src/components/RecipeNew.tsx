@@ -13,10 +13,12 @@ import {
   formDataToRecipePayload,
   getIngredientList,
   getMealTypeList,
+  getRecipeDetails,
   getTagList,
+  recipeResponseToFormData,
 } from "../utils/api.utils";
 
-type RecipeNewPropType = { handleClose: () => void };
+type RecipeNewPropType = { recipeId: number | null | undefined; handleClose: () => void };
 type MealType = {
   id: number;
   meal_type_label: string | null;
@@ -121,10 +123,10 @@ type Ingredient = {
 //       },
 //     ],
 //   };
-const Recipe = ({ handleClose }: RecipeNewPropType) => {
+const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
   const [primaryImage, setPrimaryImage] = useState(defaultImg);
   const [recipe, setRecipe] = useState<any>({
-    meal_type: {},
+    meal_types: {},
     tags: {},
     ingredients: {},
     recipe_steps: {},
@@ -160,6 +162,12 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
     getIngredientList().then((ingredients) => {
       setIngredientOptions(ingredients);
     });
+
+    if (recipeId) {
+      getRecipeDetails(recipeId).then((recipe) => {
+        setRecipe(recipeResponseToFormData(recipe));
+      });
+    }
   }, []);
 
   const handleRecipeChange = (
@@ -170,12 +178,12 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
       console.log({ prev });
       let newState;
       switch (e.target.name.split("-")[0]) {
-        case "meal_type":
+        case "meal_types":
           newState = {
             ...prev,
-            meal_type: {
-              ...prev.meal_type,
-              [e.target.value]: !prev.meal_type[e.target.value],
+            meal_types: {
+              ...prev.meal_types,
+              [e.target.value]: !prev.meal_types[e.target.value],
             },
           };
           break;
@@ -320,7 +328,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
       handleClose();
     }
   };
-  
+
   return (
     <div className="flex mx-auto w-full ">
       <div className="relative inline-block w-full shadow p-4 rounded-lg bg-gray-600">
@@ -348,7 +356,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="prep_time"
                   name="prep_time"
-                  className="w-10 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
                   value={recipe?.prep_time || ""}
                   onChange={handleRecipeChange}
                 />
@@ -365,7 +373,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="cook_time"
                   name="cook_time"
-                  className="w-10 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
                   value={recipe?.cook_time || ""}
                   onChange={handleRecipeChange}
                 />
@@ -382,7 +390,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="serving_size"
                   name="serving_size"
-                  className="w-10 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
                   value={recipe?.serving_size || ""}
                   onChange={handleRecipeChange}
                 />
@@ -399,7 +407,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="calorie_count"
                   name="calorie_count"
-                  className="w-10 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
                   value={recipe?.calorie_count || ""}
                   onChange={handleRecipeChange}
                 />
@@ -448,14 +456,14 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                       <li key={mt.id} className="capitalize">
                         <input
                           type="checkbox"
-                          id="meal_type"
-                          name="meal_type"
-                          checked={recipe?.meal_type?.[mt.id] || false}
+                          id="meal_types"
+                          name="meal_types"
+                          checked={recipe?.meal_types?.[mt.id] || false}
                           value={mt.id}
                           onChange={handleRecipeChange}
                         />
                         <label
-                          htmlFor="meal_type"
+                          htmlFor="meal_types"
                           className="text-sm font-medium text-gray-200"
                         >
                           {mt.meal_type_label}
@@ -496,9 +504,7 @@ const Recipe = ({ handleClose }: RecipeNewPropType) => {
                           type="checkbox"
                           id="tag"
                           name="tag"
-                          checked={
-                            recipe?.tags?.[t.id] || false
-                          }
+                          checked={recipe?.tags?.[t.id] || false}
                           value={t.id}
                           onChange={handleRecipeChange}
                         />

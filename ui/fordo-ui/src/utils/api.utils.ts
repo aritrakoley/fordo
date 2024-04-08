@@ -185,3 +185,78 @@ export const formDataToRecipePayload = (formData: any) => {
 
   return recipePayload;
 };
+
+export const recipeResponseToFormData = (recipeData: any) => {
+  let recipeIngredients:any = {};
+  let recipeSteps:any = {};
+  let recipeNotes:any = {};
+  let recipeMealTypes:any = {};
+  let recipeTags:any = {};
+
+  if (recipeData?.ingredients) {
+    recipeIngredients = [];
+    for (const i of recipeData.ingredients) {
+      recipeIngredients[i.id.toString() as string] = {
+        id: i.id.toString(),
+        label: i.ingredient_name || null,
+        quantity: i.quantity || null,
+        unit: i.unit || null,
+      }
+    }
+  }
+
+  // if (recipeData?.recipe_steps) {
+  //   recipeSteps = [];
+  //   for (const id in recipeData.recipe_steps) {
+  //     recipeSteps.push({ ...recipeData.recipe_steps[id], sort_order: id });
+  //   }
+  //   recipeSteps.sort((a, b) => a.sort_order - b.sort_order);
+  //   for (let i = 0; i < recipeSteps.length; i++)
+  //     recipeSteps[i].sort_order = i + 1;
+  // }
+
+  // if (recipeData?.notes) {
+  //   recipeNotes = [];
+  //   for (const id in recipeData.notes) {
+  //     recipeNotes.push({ ...recipeData.notes[id] });
+  //   }
+  // }
+
+  // if (recipeData?.meal_types) {
+  //   recipeMealTypes = [];
+  //   for (const id in recipeData.meal_types) {
+  //     if (recipeData.meal_types[id]) recipeMealTypes.push(parseInt(id));
+  //   }
+  // }
+
+  // if (recipeData?.tags) {
+  //   recipeTags = [];
+  //   for (const id in recipeData.tags) {
+  //     if (recipeData.tags[id]) recipeTags.push(parseInt(id));
+  //   }
+  // }
+
+  const formData = {
+    recipe_name: recipeData?.recipe_name || null,
+    description: recipeData?.description || null,
+    prep_time: recipeData?.prep_time
+      ? (parseInt(recipeData.prep_time) / 60).toFixed(0)
+      : null,
+    cook_time: recipeData?.cook_time
+      ?( parseInt(recipeData.cook_time) / 60).toFixed(0)
+      : null,
+    serving_size: recipeData?.serving_size
+      ? parseInt(recipeData.serving_size)
+      : null,
+    calorie_count: recipeData?.calorie_count
+      ? parseFloat(recipeData.calorie_count)
+      : null,
+    ingredients: recipeIngredients,
+    steps: recipeSteps,
+    notes: recipeNotes,
+    meal_types: recipeMealTypes,
+    tags: recipeTags,
+  };
+
+  return formData;
+};
