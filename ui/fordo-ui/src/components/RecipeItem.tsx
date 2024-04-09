@@ -32,7 +32,7 @@ const RecipeItem = (props: RecipeItemPropType) => {
       className="flex mx-5 items-center space-x-4 hover:bg-gray-700 active:scale-95 ease-in-out duration-75 bg-slate-700 py-2 px-4 rounded-2xl text-white"
       onClick={(e) => {
         // console.log('parent',e.currentTarget === e.target, e.currentTarget, e.target)
-        if (e.currentTarget === e.target) props.handleClick(id);
+        props.handleClick(id);
       }}
     >
       <div className="flex-shrink-0">

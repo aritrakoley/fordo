@@ -49,3 +49,18 @@ services:
 
     networks:
       - fordo_network
+
+  app-fordo-ui:
+    depends_on:
+      - app-fordo-api
+
+    build:
+      context: ../../ui/fordo-ui/
+    container_name: app-fordo-ui
+    restart: always
+
+    ports:
+      - 5174:5173
+
+    networks:
+      - fordo_network

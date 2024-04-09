@@ -1,8 +1,10 @@
+
+const port = 3001;
 export const getRecipeList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/recipe/list`, {
+    await fetch(`http://localhost:${port}/recipe/list`, {
       method: "POST",
     })
   ).json();
@@ -14,7 +16,7 @@ export const getRecipeDetails = async (recipeId: number) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/recipe/details`, {
+    await fetch(`http://localhost:${port}/recipe/details`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +34,7 @@ export const getMealTypeList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/mealtype/list`, {
+    await fetch(`http://localhost:${port}/mealtype/list`, {
       method: "POST",
     })
   ).json();
@@ -44,7 +46,7 @@ export const createMealType = async (meal_type_label: string) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/mealtype/create`, {
+  const res = await fetch(`http://localhost:${port}/mealtype/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +63,7 @@ export const getTagList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/tag/list`, {
+    await fetch(`http://localhost:${port}/tag/list`, {
       method: "POST",
     })
   ).json();
@@ -73,7 +75,7 @@ export const createTag = async (tag_label: string) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/tag/create`, {
+  const res = await fetch(`http://localhost:${port}/tag/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +92,7 @@ export const getIngredientList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/ingredient/list`, {
+    await fetch(`http://localhost:${port}/ingredient/list`, {
       method: "POST",
     })
   ).json();
@@ -102,7 +104,7 @@ export const createRecipe = async (recipe: any) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/recipe/create`, {
+  const res = await fetch(`http://localhost:${port}/recipe/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -120,7 +122,7 @@ export const editRecipe = async (recipe: any) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/recipe/edit`, {
+  const res = await fetch(`http://localhost:${port}/recipe/edit`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
