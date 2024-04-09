@@ -51,7 +51,7 @@ const RecipeList = () => {
         <div className="rounded-full bg-gray-700/70 m-2 top-0 right-0 text-white z-10 text-2xl" onClick={handleRecipeAddClick} >{addIcon}</div>
       </div>
 
-      <div className="flow-root">
+      <div className="flow-rooti overflow-auto">
         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
           {recipeList?.length
             ? recipeList.map(r => <li key={r.id} className="py-3 sm:py-4">
@@ -66,9 +66,9 @@ const RecipeList = () => {
   console.log(openPage, openRecipeId)
   return (
     <>
-      <div className="flex flex-col items-center w-full min-h-[100vh] h-fit bg-slate-700 mx-auto">
+      <div className="flex flex-col items-center w-full h-[100vh] bg-slate-700 mx-auto">
         <h1 className="text-9xl mb-4 text-slate-300">Fordo</h1>
-        <div className="p-4 w-[80%] max-w-[80rem] bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex flex-col p-4 w-[80%] max-w-[80rem] h-[80%] overflow-auto bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
         {
             openPage ==="recipe_list"
