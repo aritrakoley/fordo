@@ -1,4 +1,4 @@
-fordo-data/*
+./fordo-dev-setup/fordo-data/
 
 # Logs
 logs
