@@ -4,6 +4,10 @@ version: '3.9'
 networks:
   fordo-network:
 
+volumes:
+  api-node_modules:
+  ui-node_modules:
+
 
 services:
 
@@ -41,8 +45,9 @@ services:
     build:
       context: ./fordo/api/
     
-    # volumes:
-    #   - ./fordo/api/:/opt/app
+    volumes:
+      - ./fordo/api/:/opt/app
+      - api-node_modules:/opt/app/node_modules
 
     container_name: fordo-api
     restart: always
@@ -69,8 +74,9 @@ services:
     build:
       context: ./fordo/ui
     
-    # volumes:
-    #   - ./fordo/ui/:/opt/app
+    volumes:
+      - ./fordo/ui/:/opt/app
+      - ui-node_modules:/opt/app/node_modules
 
     container_name: fordo-ui
     restart: always
