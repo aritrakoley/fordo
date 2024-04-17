@@ -2,6 +2,22 @@
 
 Simple recipe web app
 
+# Dev Setup
+
+```sh
+# Install dependencies for api
+cd fordo-dev-setup/fordo/api
+npm i
+
+# Install dependencies for ui
+cd fordo-dev-setup/fordo/ui
+npm i
+
+# Spin up the containers using docker compose
+cd fordo-dev-setup
+docker compose up
+```
+
 ## TODO
 
 - Use sequelize
