@@ -1,8 +1,8 @@
+import { API_BASEURL, API_PORT, INGREDIENT_LIST_URL, MEALTYPE_CREATE_URL, MEALTYPE_LIST_URL, RECIPE_CREATE_URL, RECIPE_DETAILS_URL, RECIPE_EDIT_URL, RECIPE_LIST_URL, TAG_CREATE_URL, TAG_LIST_URL } from "../_common/constants";
+
 export const getRecipeList = async () => {
-  const baseUrl = import.meta.env.API_BASE_URL;
-  console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/recipe/list`, {
+    await fetch(`${API_BASEURL}:${API_PORT}${RECIPE_LIST_URL}`, {
       method: "POST",
     })
   ).json();
@@ -11,10 +11,8 @@ export const getRecipeList = async () => {
 };
 
 export const getRecipeDetails = async (recipeId: number) => {
-  const baseUrl = import.meta.env.API_BASE_URL;
-  console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/recipe/details`, {
+    await fetch(`${API_BASEURL}:${API_PORT}${RECIPE_DETAILS_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,10 +27,8 @@ export const getRecipeDetails = async (recipeId: number) => {
 };
 
 export const getMealTypeList = async () => {
-  const baseUrl = import.meta.env.API_BASE_URL;
-  console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/mealtype/list`, {
+    await fetch(`${API_BASEURL}:${API_PORT}${MEALTYPE_LIST_URL}`, {
       method: "POST",
     })
   ).json();
@@ -44,7 +40,7 @@ export const createMealType = async (meal_type_label: string) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/mealtype/create`, {
+  const res = await fetch(`${API_BASEURL}:${API_PORT}${MEALTYPE_CREATE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +57,7 @@ export const getTagList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/tag/list`, {
+    await fetch(`${API_BASEURL}:${API_PORT}${TAG_LIST_URL}`, {
       method: "POST",
     })
   ).json();
@@ -73,7 +69,7 @@ export const createTag = async (tag_label: string) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/tag/create`, {
+  const res = await fetch(`${API_BASEURL}:${API_PORT}${TAG_CREATE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +86,7 @@ export const getIngredientList = async () => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
   const res = await (
-    await fetch(`http://localhost:3000/ingredient/list`, {
+    await fetch(`${API_BASEURL}:${API_PORT}${INGREDIENT_LIST_URL}`, {
       method: "POST",
     })
   ).json();
@@ -102,7 +98,7 @@ export const createRecipe = async (recipe: any) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/recipe/create`, {
+  const res = await fetch(`${API_BASEURL}:${API_PORT}${RECIPE_CREATE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -120,7 +116,7 @@ export const editRecipe = async (recipe: any) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
 
-  const res = await fetch(`http://localhost:3000/recipe/edit`, {
+  const res = await fetch(`${API_BASEURL}:${API_PORT}${RECIPE_EDIT_URL}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

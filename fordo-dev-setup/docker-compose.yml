@@ -1,0 +1,86 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+networks:
+  fordo-network:
+
+
+services:
+
+  fordo-db:
+    image: postgres:alpine
+    container_name: fordo-db
+    restart: always
+    shm_size: 128mb
+
+    volumes:
+      - ./fordo-data/postgresql/data:/var/lib/postgresql/data
+      - ./fordo/db/db.init.sql:/docker-entrypoint-initdb.d/db.init.sql
+
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    expose:
+      - 5432
+
+    ports:
+      - 5432:5432
+
+    networks:
+      - fordo-network
+
+  fordo-api:
+    depends_on:
+      - fordo-db
+
+    build:
+      context: ./fordo/api/
+    
+    # volumes:
+    #   - ./fordo/api/:/opt/app
+
+    container_name: fordo-api
+    restart: always
+
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      API_PORT: ${API_PORT}
+
+    ports:
+      - 3000:3000
+
+    networks:
+      - fordo-network
+
+  fordo-ui:
+    depends_on:
+      - fordo-api
+
+    build:
+      context: ./fordo/ui
+    
+    # volumes:
+    #   - ./fordo/ui/:/opt/app
+
+    container_name: fordo-ui
+    restart: always
+
+    environment:
+      VITE_API_BASEURL: ${API_BASEURL}
+      VITE_API_PORT: ${API_PORT}
+
+    ports:
+      - 5173:5173
+
+    networks:
+      - fordo-network

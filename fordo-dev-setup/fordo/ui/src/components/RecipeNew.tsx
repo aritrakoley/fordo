@@ -358,7 +358,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   id="prep_time"
                   name="prep_time"
                   className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
-                  value={recipe?.prep_time || ""}
+                  value={recipe?.prep_time ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
@@ -375,7 +375,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   id="cook_time"
                   name="cook_time"
                   className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
-                  value={recipe?.cook_time || ""}
+                  value={recipe?.cook_time ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
@@ -392,7 +392,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   id="serving_size"
                   name="serving_size"
                   className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
-                  value={recipe?.serving_size || ""}
+                  value={recipe?.serving_size ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
@@ -409,7 +409,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   id="calorie_count"
                   name="calorie_count"
                   className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
-                  value={recipe?.calorie_count || ""}
+                  value={recipe?.calorie_count ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
@@ -555,7 +555,6 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                 name="ingredient_search_term"
                 id="ingredient_search_term"
                 className="px-4 appearance-none outline-none text-gray-800 w-full"
-                checked
                 onChange={handleIngredientSearchTermChange}
               />
 
@@ -566,9 +565,9 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -584,9 +583,9 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <polyline points="18 15 12 9 6 15"></polyline>
                 </svg>
@@ -598,7 +597,6 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               name="show_more"
               id="show_more"
               className="hidden peer"
-              checked
             />
             <div className="absolute rounded shadow bg-white overflow-hidden hidden peer-checked:flex flex-col w-full mt-1 border border-gray-200">
               {ingredientOptions?.length &&

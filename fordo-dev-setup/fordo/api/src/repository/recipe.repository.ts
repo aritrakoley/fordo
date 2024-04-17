@@ -380,12 +380,12 @@ export const updateRecipe = async (recipe: RecipeUpdateRequest) => {
     } = recipe;
     const vals = [
       id,
-      recipe_name || oldRecipe.recipe_name,
-      description || oldRecipe.description,
-      prep_time || oldRecipe.prep_time,
-      cook_time || oldRecipe.cook_time,
-      calorie_count || oldRecipe.calorie_count,
-      serving_size || oldRecipe.serving_size,
+      recipe_name ?? oldRecipe.recipe_name,
+      description ?? oldRecipe.description,
+      prep_time ?? oldRecipe.prep_time,
+      cook_time ?? oldRecipe.cook_time,
+      calorie_count ?? oldRecipe.calorie_count,
+      serving_size ?? oldRecipe.serving_size,
       typeof is_active === "boolean" ? is_active : oldRecipe.is_active,
     ];
 
