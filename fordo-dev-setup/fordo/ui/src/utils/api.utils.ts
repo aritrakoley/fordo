@@ -1,4 +1,16 @@
-import { API_BASEURL, API_PORT, INGREDIENT_LIST_URL, MEALTYPE_CREATE_URL, MEALTYPE_LIST_URL, RECIPE_CREATE_URL, RECIPE_DETAILS_URL, RECIPE_EDIT_URL, RECIPE_LIST_URL, TAG_CREATE_URL, TAG_LIST_URL } from "../_common/constants";
+import {
+  API_BASEURL,
+  API_PORT,
+  INGREDIENT_LIST_URL,
+  MEALTYPE_CREATE_URL,
+  MEALTYPE_LIST_URL,
+  RECIPE_CREATE_URL,
+  RECIPE_DETAILS_URL,
+  RECIPE_EDIT_URL,
+  RECIPE_LIST_URL,
+  TAG_CREATE_URL,
+  TAG_LIST_URL,
+} from "../_common/constants";
 
 export const getRecipeList = async () => {
   const res = await (
@@ -111,7 +123,6 @@ export const createRecipe = async (recipe: any) => {
   return success;
 };
 
-
 export const editRecipe = async (recipe: any) => {
   const baseUrl = import.meta.env.API_BASE_URL;
   console.log(baseUrl);
@@ -208,6 +219,7 @@ export const recipeResponseToFormData = (recipeData: any) => {
   let recipeMealTypes: any = {};
   let recipeTags: any = {};
 
+  console.log({ recipeData });
   if (recipeData?.ingredients) {
     for (const i of recipeData.ingredients) {
       recipeIngredients[i.id.toString()] = {
@@ -218,7 +230,7 @@ export const recipeResponseToFormData = (recipeData: any) => {
       };
     }
   }
-  if (recipeData?.ingredients) {
+  if (recipeData?.steps) {
     for (const step of recipeData.steps) {
       recipeSteps[step.sort_order.toString()] = {
         // id: step.id.toString(),

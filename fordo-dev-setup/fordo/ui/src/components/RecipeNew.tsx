@@ -19,7 +19,10 @@ import {
   recipeResponseToFormData,
 } from "../utils/api.utils";
 
-type RecipeNewPropType = { recipeId: number | null | undefined; handleClose: () => void };
+type RecipeNewPropType = {
+  recipeId: number | null | undefined;
+  handleClose: () => void;
+};
 type MealType = {
   id: number;
   meal_type_label: string | null;
@@ -166,6 +169,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
 
     if (recipeId) {
       getRecipeDetails(recipeId).then((recipe) => {
+        console.log({ recipe });
         setRecipe(recipeResponseToFormData(recipe));
       });
     }
@@ -324,29 +328,31 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
     console.log(JSON.stringify(payload, null, 2));
     console.log("========================================");
 
-    const success = recipeId ? await editRecipe(payload) : await createRecipe(payload);
+    const success = recipeId
+      ? await editRecipe(payload)
+      : await createRecipe(payload);
     if (success) {
       handleClose();
     }
   };
 
   return (
-    <div className="flex mx-auto w-full ">
-      <div className="relative inline-block w-full shadow p-4 rounded-lg bg-gray-600">
+    <div className="flex w-full mx-auto ">
+      <div className="relative inline-block w-full p-4 bg-gray-600 rounded-lg shadow">
         <div
-          className="rounded-full bg-gray-700/70 m-2 absolute top-0 right-0 text-white z-10 text-2xl"
+          className="absolute top-0 right-0 z-10 m-2 text-2xl text-white rounded-full bg-gray-700/70"
           onClick={handleClose}
         >
           {closeIcon}
         </div>
-        <div className="flex justify-center relative rounded-lg overflow-hidden h-52">
-          <div className="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-            <img src={primaryImage} className="w-full h-full object-cover" />
+        <div className="relative flex justify-center overflow-hidden rounded-lg h-52">
+          <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
+            <img src={primaryImage} className="object-cover w-full h-full" />
           </div>
 
-          <div className="absolute flex justify-center bottom-0 mb-3">
-            <div className="flex bg-gray-600 px-4 py-1 space-x-10 rounded-lg overflow-hidden shadow">
-              <p className="flex space-between items-center font-medium text-gray-200">
+          <div className="absolute bottom-0 flex justify-center mb-3">
+            <div className="flex px-4 py-1 space-x-10 overflow-hidden bg-gray-600 rounded-lg shadow">
+              <p className="flex items-center font-medium text-gray-200 space-between">
                 <label
                   htmlFor="prep_time"
                   className="block text-sm font-medium text-gray-200"
@@ -357,13 +363,13 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="prep_time"
                   name="prep_time"
-                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10 ml-2 text-4xl text-gray-700 rounded-md"
                   value={recipe?.prep_time ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
 
-              <p className="flex space-between items-center font-medium text-gray-200">
+              <p className="flex items-center font-medium text-gray-200 space-between">
                 <label
                   htmlFor="cook_time"
                   className="block text-sm font-medium text-gray-200"
@@ -374,13 +380,13 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="cook_time"
                   name="cook_time"
-                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10 ml-2 text-4xl text-gray-700 rounded-md"
                   value={recipe?.cook_time ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
 
-              <p className="flex space-between items-center font-medium text-gray-200">
+              <p className="flex items-center font-medium text-gray-200 space-between">
                 <label
                   htmlFor="serving_size"
                   className="block text-sm font-medium text-gray-200"
@@ -391,13 +397,13 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="serving_size"
                   name="serving_size"
-                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10 ml-2 text-4xl text-gray-700 rounded-md"
                   value={recipe?.serving_size ?? ""}
                   onChange={handleRecipeChange}
                 />
               </p>
 
-              <p className="flex space-between items-center font-medium text-gray-200">
+              <p className="flex items-center font-medium text-gray-200 space-between">
                 <label
                   htmlFor="calorie_count"
                   className="block text-sm font-medium text-gray-200"
@@ -408,7 +414,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   type="number"
                   id="calorie_count"
                   name="calorie_count"
-                  className="w-20 h-10  ml-2 rounded-md text-gray-700 text-4xl"
+                  className="w-20 h-10 ml-2 text-4xl text-gray-700 rounded-md"
                   value={recipe?.calorie_count ?? ""}
                   onChange={handleRecipeChange}
                 />
@@ -431,7 +437,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
             value={recipe?.recipe_name || ""}
             onChange={handleRecipeChange}
           />
-          <p className="mt-2 text-md text-gray-400">
+          <p className="mt-2 text-gray-400 text-md">
             <label
               htmlFor="description"
               className="block text-sm font-medium text-gray-200"
@@ -448,7 +454,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
           </p>
         </div>
         <div className="flex mt-8 ">
-          <div className="w-full flex flex-col xl:items-center text-gray-100  ">
+          <div className="flex flex-col w-full text-gray-100 xl:items-center ">
             <div className="text-2xl">Meal Types:</div>
             <div>
               <ul>
@@ -473,10 +479,10 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                     ))
                   : null}
               </ul>
-              <div className="flex  items-center text-gray-100">
+              <div className="flex items-center text-gray-100">
                 <label
                   htmlFor="newMealType"
-                  className="block text-sm font-medium text-gray-200 mr-2"
+                  className="block mr-2 text-sm font-medium text-gray-200"
                 >
                   New Meal Type:
                 </label>
@@ -494,7 +500,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col xl:items-center text-gray-100  ">
+          <div className="flex flex-col w-full text-gray-100 xl:items-center ">
             <div className="text-2xl">Tag:</div>
             <div>
               <ul>
@@ -519,10 +525,10 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                     ))
                   : null}
               </ul>
-              <div className="flex  items-center text-gray-100">
+              <div className="flex items-center text-gray-100">
                 <label
                   htmlFor="newTag"
-                  className="block text-sm font-medium text-gray-200 mr-2"
+                  className="block mr-2 text-sm font-medium text-gray-200"
                 >
                   New Tag:
                 </label>
@@ -543,22 +549,22 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
         <div className="w-full mt-8">
           <label
             htmlFor="select"
-            className="font-semibold block py-2 text-white text-2xl"
+            className="block py-2 text-2xl font-semibold text-white"
           >
             Ingredients:
           </label>
 
           <div className="relative">
-            <div className="h-10 bg-white flex border border-gray-200 rounded items-center">
+            <div className="flex items-center h-10 bg-white border border-gray-200 rounded">
               <input
                 value={ingredientSearchTerm}
                 name="ingredient_search_term"
                 id="ingredient_search_term"
-                className="px-4 appearance-none outline-none text-gray-800 w-full"
+                className="w-full px-4 text-gray-800 outline-none appearance-none"
                 onChange={handleIngredientSearchTermChange}
               />
 
-              <button className="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-gray-600">
+              <button className="text-gray-300 transition-all outline-none cursor-pointer focus:outline-none hover:text-gray-600">
                 <svg
                   onClick={() => setIngredientSearchTerm("")}
                   className="w-4 h-4 mx-2 fill-current"
@@ -575,7 +581,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               </button>
               <label
                 htmlFor="show_more"
-                className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-gray-600"
+                className="text-gray-300 transition-all border-l border-gray-200 outline-none cursor-pointer focus:outline-none hover:text-gray-600"
               >
                 <svg
                   onClick={() => setShowIngredientOptions((prev) => !prev)}
@@ -598,7 +604,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               id="show_more"
               className="hidden peer"
             />
-            <div className="absolute rounded shadow bg-white overflow-hidden hidden peer-checked:flex flex-col w-full mt-1 border border-gray-200">
+            <div className="absolute flex-col hidden w-full mt-1 overflow-hidden bg-white border border-gray-200 rounded shadow peer-checked:flex">
               {ingredientOptions?.length &&
               (showIngredientOptions || ingredientSearchTerm)
                 ? ingredientOptions
@@ -610,7 +616,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                     .map((i) => (
                       <div key={i.id} className="cursor-pointer group">
                         <div
-                          className="capitalize block p-2 border-transparent border-l-4 group-hover:border-blue-600 group-hover:bg-gray-100"
+                          className="block p-2 capitalize border-l-4 border-transparent group-hover:border-blue-600 group-hover:bg-gray-100"
                           onClick={() => handleIngredientMap(i)}
                         >
                           {i.ingredient_name}
@@ -633,12 +639,12 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                   return (
                     <li
                       key={ing.id}
-                      className="w-full flex items-center space-x-4 border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                      className="flex items-center w-full py-4 space-x-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
                     >
                       <div className="capitalize">
                         {idx + 1}. {ing.label}:
                       </div>
-                      <div className="flex space-between items-center font-medium text-gray-200">
+                      <div className="flex items-center font-medium text-gray-200 space-between">
                         <label
                           htmlFor={`ingredient-${ing.id}_quantity`}
                           className="block text-sm font-medium text-gray-200"
@@ -649,12 +655,12 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                           type="number"
                           id={`ingredient-${ing.id}_quantity`}
                           name={`ingredient-${ing.id}_quantity`}
-                          className="w-16 h-6  ml-2 rounded-md text-gray-700 text-xl"
+                          className="w-16 h-6 ml-2 text-xl text-gray-700 rounded-md"
                           value={ing.quantity || ""}
                           onChange={handleRecipeChange}
                         />
                       </div>
-                      <div className="flex space-between items-center font-medium text-gray-200">
+                      <div className="flex items-center font-medium text-gray-200 space-between">
                         <label
                           htmlFor={`ingredient-${ing.id}_unit`}
                           className="block text-sm font-medium text-gray-200"
@@ -665,7 +671,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                           type="text"
                           id={`ingredient-${ing.id}_unit`}
                           name={`ingredient-${ing.id}_unit`}
-                          className="w-16 h-6 ml-2 rounded-md text-gray-700 text-xl"
+                          className="w-16 h-6 ml-2 text-xl text-gray-700 rounded-md"
                           value={ing.unit || ""}
                           onChange={handleRecipeChange}
                         />
@@ -677,7 +683,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
           </ul>
         </div>
 
-        <div className="mt-8 flow-root">
+        <div className="flow-root mt-8">
           <div className="text-2xl text-gray-100">Steps:</div>
           <ul
             role="list"
@@ -687,11 +693,11 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               ? Object.keys(recipe.recipe_steps).map((skey, idx) => (
                   <li
                     key={skey}
-                    className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                    className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
                   >
-                    <div className="capitaliz flex w-full">
-                      <div className="text-4xl pr-4">{idx + 1} </div>
-                      <div className="capitaliz flex flex-col flex-grow">
+                    <div className="flex w-full capitaliz">
+                      <div className="pr-4 text-4xl">{idx + 1} </div>
+                      <div className="flex flex-col flex-grow capitaliz">
                         <p className="font-bold">
                           {recipe.recipe_steps[skey].title}
                         </p>
@@ -717,9 +723,9 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               type="text"
               id="step-title"
               name="step-title"
-              className="w-full rounded-md text-gray-700 text-4xl"
+              className="w-full text-4xl text-gray-700 rounded-md"
             />
-            <p className="mt-2 text-md text-gray-400">
+            <p className="mt-2 text-gray-400 text-md">
               <label
                 htmlFor="step-body"
                 className="block text-sm font-medium text-gray-200"
@@ -730,11 +736,11 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                 ref={newStepBody}
                 id="step-body"
                 name="step-body"
-                className="w-full rounded-md text-gray-700 text-4xl"
+                className="w-full text-4xl text-gray-700 rounded-md"
               ></textarea>
             </p>
             <button
-              className="w-full rounded-lg bg-slate-200 active:scale-95 ease-in-out duration-75 "
+              className="w-full duration-75 ease-in-out rounded-lg bg-slate-200 active:scale-95 "
               onClick={handleNewStep}
             >
               Add Step
@@ -742,7 +748,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
           </div>
         </div>
 
-        <div className="mt-8 flow-root">
+        <div className="flow-root mt-8">
           <div className="text-2xl text-gray-100">Notes:</div>
           <ul
             role="list"
@@ -752,11 +758,11 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               ? Object.keys(recipe.notes).map((nkey, idx) => (
                   <li
                     key={nkey}
-                    className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200"
+                    className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
                   >
-                    <div className="capitaliz flex w-full">
-                      <div className="text-4xl pr-4">{idx + 1} </div>
-                      <div className="capitaliz flex flex-col flex-grow">
+                    <div className="flex w-full capitaliz">
+                      <div className="pr-4 text-4xl">{idx + 1} </div>
+                      <div className="flex flex-col flex-grow capitaliz">
                         <p className="font-bold">{recipe.notes[nkey].title}</p>
                         <p>{recipe.notes[nkey].body}</p>
                       </div>
@@ -780,9 +786,9 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
               type="text"
               id="step-title"
               name="step-title"
-              className="w-full rounded-md text-gray-700 text-4xl"
+              className="w-full text-4xl text-gray-700 rounded-md"
             />
-            <p className="mt-2 text-md text-gray-400">
+            <p className="mt-2 text-gray-400 text-md">
               <label
                 htmlFor="step-body"
                 className="block text-sm font-medium text-gray-200"
@@ -793,11 +799,11 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
                 ref={newNoteBody}
                 id="step-body"
                 name="step-body"
-                className="w-full rounded-md text-gray-700 text-4xl"
+                className="w-full text-4xl text-gray-700 rounded-md"
               ></textarea>
             </p>
             <button
-              className="w-full rounded-lg bg-slate-200 active:scale-95 ease-in-out duration-75 "
+              className="w-full duration-75 ease-in-out rounded-lg bg-slate-200 active:scale-95 "
               onClick={handleNewNote}
             >
               Add Note
@@ -805,7 +811,7 @@ const Recipe = ({ recipeId, handleClose }: RecipeNewPropType) => {
           </div>
 
           <button
-            className="w-full h-10 mt-6 font-bold rounded-lg bg-lime-500 active:scale-95 ease-in-out duration-75 "
+            className="w-full h-10 mt-6 font-bold duration-75 ease-in-out rounded-lg bg-lime-500 active:scale-95 "
             onClick={handleSaveRecipe}
           >
             Save Recipe

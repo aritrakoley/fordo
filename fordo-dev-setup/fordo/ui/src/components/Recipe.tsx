@@ -53,27 +53,27 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
 
   if (!recipe) return null;
   return (
-    <div className="flex mx-auto w-full ">
-      <div className="relative inline-block w-full shadow p-4 rounded-lg bg-gray-600">
-        <div className="rounded-full bg-gray-700/70 m-2 absolute top-0 right-0 text-white z-10 text-2xl" onClick={handleClose} >{closeIcon}</div>
-        <div className="flex justify-center relative rounded-lg overflow-hidden h-52">
-          <div className="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-            <img src={defaultImg} className="w-full h-full object-cover" />
+    <div className="flex w-full mx-auto ">
+      <div className="relative inline-block w-full p-4 bg-gray-600 rounded-lg shadow">
+        <div className="absolute top-0 right-0 z-10 m-2 text-2xl text-white rounded-full bg-gray-700/70" onClick={handleClose} >{closeIcon}</div>
+        <div className="relative flex justify-center overflow-hidden rounded-lg h-52">
+          <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
+            <img src={defaultImg} className="object-cover w-full h-full" />
           </div>
 
-          <div className="absolute flex justify-center bottom-0 mb-3">
-            <div className="flex bg-gray-600 px-4 py-1 space-x-10 rounded-lg overflow-hidden shadow">
+          <div className="absolute bottom-0 flex justify-center mb-3">
+            <div className="flex px-4 py-1 space-x-10 overflow-hidden bg-gray-600 rounded-lg shadow">
               
-              <p className="flex space-between font-medium text-gray-200">
+              <p className="flex font-medium text-gray-200 space-between">
                 {clockOutlineIcon} <span className='ml-2'>{recipe.prep_time ? (recipe.prep_time / 60).toFixed(0) : 0} + {recipe.cook_time ? (recipe.cook_time / 60).toFixed(0) : 0}</span>
               </p>
 
               <p className="flex items-center font-medium text-gray-200">
-                {clipboardIcon} <span className='ml-2'>{recipe.ingredients.length}</span>
+                {clipboardIcon} <span className='ml-2'>{recipe?.ingredients?.length ?? '-'}</span>
               </p>
 
               <p className="flex items-center font-medium text-gray-200">
-                {peopleIcon} <span className='ml-2'>{recipe.serving_size}</span>
+                {peopleIcon} <span className='ml-2'>{recipe?.serving_size ?? '-'}</span>
               </p>
             </div>
           </div>
@@ -81,16 +81,16 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
         </div>
 
         <div className="mt-4">
-          <h2 className="font-medium text-base md:text-lg text-gray-200 line-clamp-1" >
+          <h2 className="text-base font-medium text-gray-200 md:text-lg line-clamp-1" >
             {recipe.recipe_name}
           </h2>
-          <p className="mt-2 text-md text-gray-400" >
+          <p className="mt-2 text-gray-400 text-md" >
             {recipe.description}
           </p>
         </div>
 
         <div className="grid grid-cols-2 grid-rows-2 gap-4 mt-8">
-          <div className="flex flex-col xl:items-center text-gray-100">
+          <div className="flex flex-col text-gray-100 xl:items-center">
             <div className='text-2xl'>Meal Types:</div>
             <div>
               <ul>
@@ -103,7 +103,7 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
             </div>
           </div>
 
-          <div className="flex flex-col xl:items-center text-gray-100">
+          <div className="flex flex-col text-gray-100 xl:items-center">
             <div className='text-2xl'>Tags:</div>
             <div>
               <ul>
@@ -124,7 +124,7 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
             {
               recipe.ingredients?.length
                 ? recipe.ingredients.map(i => <li key={i.id}
-                  className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200">
+                  className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10">
                   <span className='capitalize'>{i.ingredient_name}:</span> {i.quantity} {i.unit}
                 </li>)
                 : null
@@ -132,13 +132,13 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
           </ul>
         </div>
 
-        <div className="mt-10 flow-root">
+        <div className="flow-root mt-10">
           <div className='text-2xl text-gray-100'>Steps:</div>
           <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
             {
               recipe.steps?.length
                 ? recipe.steps.map(s => <li key={s.id}
-                  className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200">
+                  className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10">
                   <span className='capitalize'>{s.sort_order}. {s.title}: <br />{s.body}</span>
                 </li>)
                 : null
@@ -148,13 +148,13 @@ const Recipe = ({ recipeId, handleClose }: RecipePropType) => {
 
 
 
-        <div className="mt-10 flow-root">
+        <div className="flow-root mt-10">
           <div className='text-2xl text-gray-100'>Notes:</div>
           <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
             {
               recipe.notes?.length
                 ? recipe.notes.map(n => <li key={n.id}
-                  className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 text-gray-200">
+                  className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10">
                   <span className='capitalize'>{n.title} <br />{n.body}</span>
                 </li>)
                 : null

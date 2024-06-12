@@ -170,149 +170,149 @@ export const insertRecipe = async (recipe: Partial<Recipe>) => {
 
 export const getRecipeDetails = async (recipeId: number) => {
   const sql = `
-    with 
-    iln as (
-      select 
-        ingredient_id,
-        coalesce(array_agg(local_name) filter (where local_name is not null), '{}') as local_names
-      from fordo.ingredient_local_name
-      where is_active = true
-      group by ingredient_id
-    ),
-    i as (
-      select
-        rim.recipe_id,
-        i.id,
-        any_value(rim.quantity) as quantity,
-        any_value(rim.unit) as unit,
-        any_value(i.ingredient_name) as ingredient_name,
-        any_value(i.ingredient_details) as ingredient_details,
-        any_value(i.linked_recipe) as linked_recipe,
-        any_value(iln.local_names) as local_names
-      from 
-        fordo.recipe_ingredient_map rim
-        join fordo.ingredient i
-          on i.id = rim.ingredient_id
-          and rim.recipe_id = $1
-          and rim.is_active = true
-          and i.is_active = true
-        left join iln	
-          on	iln.ingredient_id = i.id
-      group by 
-        rim.recipe_id,
-        i.id
-    ),
-    s as (
-      select 
-        recipe_id,
-        id,
-        sort_order,
-        title,
-        body
-      from fordo.recipe_step
-      where 
-        recipe_id = $1
-        and is_active = true
-      order by sort_order
-    ),
-    mt as (
-      select 
-        mtm.recipe_id,
-        mt.id,
-        mt.meal_type_label
-      from 
-        fordo.recipe_meal_type_map mtm
-        join fordo.meal_type mt 
-          on mtm.meal_type_id = mt.id
-          and mt.is_active = true
-      where 
-        mtm.recipe_id = $1
-        and mtm.is_active = true
-    ),
-    t as (
-      select 
-      rtm.recipe_id,
-      t.id,
-      t.tag_label
-      from 
-        fordo.recipe_tag_map rtm
-        join fordo.tag t
-          on t.id = rtm.tag_id
-          and t.is_active = true
-      where 
-        rtm.is_active = true
-        and rtm.recipe_id = $1
-    ),
-    n as (
-      select 
-        recipe_id,
-        id,
-        title,
-        body
-      from fordo.note
-      where 
-        recipe_id = $1
-        and is_active = true
-    )
+  with 
+  iln as (
     select 
-      r.id,
-      r.recipe_name,
-      r.description,
-      r.prep_time,
-      r.cook_time,
-      r.calorie_count,
-      r.serving_size,
-      array_agg( 
-        distinct jsonb_build_object(
-          'id',		mt.id,
-          'label',		mt.meal_type_label
-        )
-      ) as meal_types,
-      array_agg( 
-        distinct jsonb_build_object(
-          'id', i.id,
-          'ingredient_name', i.ingredient_name,
-          'quantity', i.quantity,
-          'unit', i.unit,
-          'ingredient_details', i.ingredient_details,
-          'linked_recipe', i.linked_recipe,
-          'local_names', i.local_names
-        ) 
-      ) as ingredients,
-      array_agg(
-        distinct jsonb_build_object(
-          'id', s.id,
-          'sort_order', s.sort_order,
-          'title', s.title,
-          'body', s.body
-        )
-      ) as steps,
-      array_agg( 
-        distinct jsonb_build_object(
-          'id',	t.id,
-          'label', t.tag_label
-        )
-      ) as tags,
-      array_agg(
-        distinct jsonb_build_object(
-          'id', n.id,
-          'title', n.title,
-          'body', n.body
-        )
-      ) as notes
-    from
-      fordo.recipe r
-      left join i on i.recipe_id = r.id
-      left join s on s.recipe_id = r.id
-      left join mt on mt.recipe_id = r.id
-      left join t on t.recipe_id = r.id
-      left join n on n.recipe_id = r.id
+      ingredient_id,
+      coalesce(array_agg(local_name) filter (where local_name is not null), '{}') as local_names
+    from fordo.ingredient_local_name
+    where is_active = true
+    group by ingredient_id
+  ),
+  i as (
+    select
+      rim.recipe_id,
+      i.id,
+      any_value(rim.quantity) as quantity,
+      any_value(rim.unit) as unit,
+      any_value(i.ingredient_name) as ingredient_name,
+      any_value(i.ingredient_details) as ingredient_details,
+      any_value(i.linked_recipe) as linked_recipe,
+      any_value(iln.local_names) as local_names
+    from 
+      fordo.recipe_ingredient_map rim
+      join fordo.ingredient i
+        on i.id = rim.ingredient_id
+        and rim.recipe_id = $1
+        and rim.is_active = true
+        and i.is_active = true
+      left join iln	
+        on	iln.ingredient_id = i.id
+    group by 
+      rim.recipe_id,
+      i.id
+  ),
+  s as (
+    select 
+      recipe_id,
+      id,
+      sort_order,
+      title,
+      body
+    from fordo.recipe_step
     where 
-      r.id = $1
-      and r.is_active = true
-    group by
-      r.id
-    ;
+      recipe_id = $1
+      and is_active = true
+    order by sort_order
+  ),
+  mt as (
+    select 
+      mtm.recipe_id,
+      mt.id,
+      mt.meal_type_label
+    from 
+      fordo.recipe_meal_type_map mtm
+      join fordo.meal_type mt 
+        on mtm.meal_type_id = mt.id
+        and mt.is_active = true
+    where 
+      mtm.recipe_id = $1
+      and mtm.is_active = true
+  ),
+  t as (
+    select 
+    rtm.recipe_id,
+    t.id,
+    t.tag_label
+    from 
+      fordo.recipe_tag_map rtm
+      join fordo.tag t
+        on t.id = rtm.tag_id
+        and t.is_active = true
+    where 
+      rtm.is_active = true
+      and rtm.recipe_id = $1
+  ),
+  n as (
+    select 
+      recipe_id,
+      id,
+      title,
+      body
+    from fordo.note
+    where 
+      recipe_id = $1
+      and is_active = true
+  )
+  select 
+    r.id,
+    r.recipe_name,
+    r.description,
+    r.prep_time,
+    r.cook_time,
+    r.calorie_count,
+    r.serving_size,
+    array_agg( 
+      distinct jsonb_build_object(
+        'id',		mt.id,
+        'label',		mt.meal_type_label
+      )
+    ) filter ( where mt.id is not null) as meal_types,
+    array_agg( 
+      distinct jsonb_build_object(
+        'id', i.id,
+        'ingredient_name', i.ingredient_name,
+        'quantity', i.quantity,
+        'unit', i.unit,
+        'ingredient_details', i.ingredient_details,
+        'linked_recipe', i.linked_recipe,
+        'local_names', i.local_names
+      ) 
+    ) filter ( where i.id is not null) as ingredients,
+    array_agg(
+      distinct jsonb_build_object(
+        'id', s.id,
+        'sort_order', s.sort_order,
+        'title', s.title,
+        'body', s.body
+      )
+    ) filter ( where s.id is not null) as steps,
+    array_agg( 
+      distinct jsonb_build_object(
+        'id',	t.id,
+        'label', t.tag_label
+      )
+    ) filter ( where t.id is not null) as tags,
+    array_agg(
+      distinct jsonb_build_object(
+        'id', n.id,
+        'title', n.title,
+        'body', n.body
+      )
+    ) filter ( where n.id is not null) as  notes
+  from
+    fordo.recipe r
+    left join i on i.recipe_id = r.id
+    left join s on s.recipe_id = r.id
+    left join mt on mt.recipe_id = r.id
+    left join t on t.recipe_id = r.id
+    left join n on n.recipe_id = r.id
+  where 
+    r.id = $1
+    and r.is_active = true
+  group by
+    r.id
+  ;
   `;
 
   return await simpleQuery(sql, [recipeId]);
