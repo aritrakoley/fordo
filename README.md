@@ -2,7 +2,7 @@
 
 Simple recipe web app
 
-# Dev Setup
+## Dev Setup
 
 ```sh
 docker compose up
