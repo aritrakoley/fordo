@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import defaultImage from "../assets/default.png";
 import { pencilIcon } from "./atoms/Icons";
 
@@ -13,8 +14,8 @@ export type RecipeItemType = Partial<{
 
 type RecipeItemPropType = {
   recipe: RecipeItemType;
-  handleClick: (recipeId?: number) => void;
-  handleEdit: (recipeId?: number) => void;
+  // handleClick: (recipeId?: number) => void;
+  // handleEdit: (recipeId?: number) => void;
 };
 const RecipeItem = (props: RecipeItemPropType) => {
   const {
@@ -27,13 +28,19 @@ const RecipeItem = (props: RecipeItemPropType) => {
     serving_size,
   } = props.recipe;
 
+  const navigate = useNavigate();
+  const handleRecipeItemClick = async (recipeId?: number) => {
+    navigate(`/recipe/${recipeId}`);
+  };
+
+  const handleRecipeEditClick = async (recipeId?: number) => {
+    navigate(`/recipe/${recipeId}/edit`);
+  };
+
   return (
     <div
-      className="flex mx-5 items-center space-x-4 hover:bg-gray-700 active:scale-95 ease-in-out duration-75 bg-slate-700 py-2 px-4 rounded-2xl text-white"
-      onClick={(e) => {
-        // console.log('parent',e.currentTarget === e.target, e.currentTarget, e.target)
-        props.handleClick(id);
-      }}
+      className="flex items-center px-4 py-2 mx-5 space-x-4 text-white duration-75 ease-in-out hover:bg-gray-700 active:scale-95 bg-slate-700 rounded-2xl"
+      onClick={() => handleRecipeItemClick(id)}
     >
       <div className="flex-shrink-0">
         <img
@@ -60,11 +67,11 @@ const RecipeItem = (props: RecipeItemPropType) => {
         Cook Time: {cook_time}
       </div>
       <div
-        className="w-16 h-16 flex items-center justify-center rounded-full bg-yellow-400/30 text-white z-10 text-2xl"
+        className="z-10 flex items-center justify-center w-16 h-16 text-2xl text-white rounded-full bg-yellow-400/30"
         onClick={(e) => {
           e.stopPropagation();
-        //   console.log('child',e.currentTarget === e.target, e.currentTarget, e.target)
-          props.handleEdit(id);
+            // console.log('child',e.currentTarget === e.target, e.currentTarget, e.target)
+          handleRecipeEditClick(id);
         }}
       >
         {pencilIcon}
