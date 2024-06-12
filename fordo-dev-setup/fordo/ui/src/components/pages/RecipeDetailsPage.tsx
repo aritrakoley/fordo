@@ -87,8 +87,8 @@ const RecipeDetailsPage = () => {
               <p className="flex font-medium text-gray-200 space-between">
                 {clockOutlineIcon}{" "}
                 <span className="ml-2">
-                  {recipe.prep_time ? (recipe.prep_time / 60).toFixed(0) : 0} +{" "}
-                  {recipe.cook_time ? (recipe.cook_time / 60).toFixed(0) : 0}
+                  {recipe?.prep_time ? (recipe.prep_time / 60).toFixed(0) : 0} +{" "}
+                  {recipe?.cook_time ? (recipe.cook_time / 60).toFixed(0) : 0}
                 </span>
               </p>
 
@@ -109,9 +109,9 @@ const RecipeDetailsPage = () => {
 
         <div className="mt-4">
           <h2 className="text-base font-medium text-gray-200 md:text-lg line-clamp-1">
-            {recipe.recipe_name}
+            {recipe?.recipe_name}
           </h2>
-          <p className="mt-2 text-gray-400 text-md">{recipe.description}</p>
+          <p className="mt-2 text-gray-400 text-md">{recipe?.description}</p>
         </div>
 
         <div className="grid grid-cols-2 grid-rows-2 gap-4 mt-8">
@@ -119,7 +119,7 @@ const RecipeDetailsPage = () => {
             <div className="text-2xl">Meal Types:</div>
             <div>
               <ul>
-                {recipe.meal_types?.length
+                {recipe?.meal_types?.length
                   ? recipe.meal_types.map((mt) => (
                       <li key={mt.id} className="capitalize">
                         {mt.label}
@@ -134,7 +134,7 @@ const RecipeDetailsPage = () => {
             <div className="text-2xl">Tags:</div>
             <div>
               <ul>
-                {recipe.tags?.length
+                {recipe?.tags?.length
                   ? recipe.tags.map((t) => (
                       <li key={t.id} className="capitalize">
                         {t.label}
@@ -152,7 +152,7 @@ const RecipeDetailsPage = () => {
             role="list"
             className="divide-y divide-gray-200 dark:divide-gray-700"
           >
-            {recipe.ingredients?.length
+            {recipe?.ingredients?.length
               ? recipe.ingredients.map((i) => (
                   <li
                     key={i.id}
@@ -172,7 +172,7 @@ const RecipeDetailsPage = () => {
             role="list"
             className="divide-y divide-gray-200 dark:divide-gray-700"
           >
-            {recipe.steps?.length
+            {recipe?.steps?.length
               ? recipe.steps.map((s) => (
                   <li
                     key={s.id}
@@ -194,7 +194,7 @@ const RecipeDetailsPage = () => {
             role="list"
             className="divide-y divide-gray-200 dark:divide-gray-700"
           >
-            {recipe.notes?.length
+            {recipe?.notes?.length
               ? recipe.notes.map((n) => (
                   <li
                     key={n.id}

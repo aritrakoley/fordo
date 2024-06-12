@@ -1,26 +1,30 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RecipeDetailsPage from "./components/pages/RecipeDetailsPage";
 import RecipeListPage from "./components/pages/RecipeListPage";
 import RecipeFormPage from "./components/pages/RecipeFormPage";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RecipeListPage />,
-  },
-  {
-    path: "/recipe/new",
-    element: <RecipeFormPage />,
-  },
-  {
-    path: "/recipe/:id",
-    element: <RecipeDetailsPage />,
-  },
-  {
-    path: "/recipe/:id/edit",
-    element: <RecipeFormPage />,
+    errorElement: <div>404 Not Found</div>,
+    children: [
+      {
+        path: "",
+        element: <RecipeListPage />,
+      },
+      {
+        path: "/recipe/new",
+        element: <RecipeFormPage />,
+      },
+      {
+        path: "/recipe/:id",
+        element: <RecipeDetailsPage />,
+      },
+      {
+        path: "/recipe/:id/edit",
+        element: <RecipeFormPage />,
+      },
+    ],
   },
 ]);
 
