@@ -85,7 +85,7 @@ const RecipeDetailsPage = () => {
           <div className="absolute bottom-0 flex justify-center mb-3">
             <div className="flex px-4 py-1 space-x-10 overflow-hidden bg-gray-600 rounded-lg shadow">
               <p className="flex font-medium text-gray-200 space-between">
-                {clockOutlineIcon}{" "}
+                {clockOutlineIcon}
                 <span className="ml-2">
                   {recipe?.prep_time ? (recipe.prep_time / 60).toFixed(0) : 0} +{" "}
                   {recipe?.cook_time ? (recipe.cook_time / 60).toFixed(0) : 0}
@@ -93,14 +93,14 @@ const RecipeDetailsPage = () => {
               </p>
 
               <p className="flex items-center font-medium text-gray-200">
-                {clipboardIcon}{" "}
+                {clipboardIcon}
                 <span className="ml-2">
                   {recipe?.ingredients?.length ?? "-"}
                 </span>
               </p>
 
               <p className="flex items-center font-medium text-gray-200">
-                {peopleIcon}{" "}
+                {peopleIcon}
                 <span className="ml-2">{recipe?.serving_size ?? "-"}</span>
               </p>
             </div>

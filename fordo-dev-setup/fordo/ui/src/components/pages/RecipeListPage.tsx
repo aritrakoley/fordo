@@ -3,6 +3,7 @@ import RecipeItem, { RecipeItemType } from "../RecipeItem";
 import { getRecipeList } from "../../utils/api.utils";
 import { addIcon } from "../atoms/Icons";
 import { Link } from "react-router-dom";
+import imgDarkBg from "../../assets/dark-bg.jpg";
 
 const RecipeListPage = () => {
   const [recipeList, setRecipeList] = useState<RecipeItemType[]>([]);
@@ -13,7 +14,7 @@ const RecipeListPage = () => {
 
   const list = (
     <>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 ">
         <h3 className="text-4xl font-bold leading-none text-gray-900 dark:text-white">
           Recipes
         </h3>
@@ -43,13 +44,36 @@ const RecipeListPage = () => {
   );
 
   // console.log(openPage, openRecipeId);
+  const glassStyle =
+    " backdrop-blur-md bg-gradient-to-br from-gray-300/30 to-gray-950/60 shadow-md shadow-gray-900/80 border-1 border-gray-600/30";
   return (
     <>
-      <div className="flex flex-col items-center w-full h-[100vh] bg-slate-700 mx-auto">
-        <h1 className="mb-4 text-9xl text-slate-300">Fordo</h1>
-        <div className="flex flex-col p-4 w-[80%] max-w-[80rem] h-[80%] overflow-auto bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-          {list}
-        </div>
+      <div className="flex items-center justify-between w-full h-[100vh] mx-auto bg-[url('/public/dark-bg.png')] bg-cover">
+        {/* Left Pane */}
+        <section className="flex flex-col max-w-[24rem] h-[100vh] justify-start border border-red-400">
+          <div
+            id="brand-logo"
+            className={
+              "flex items-center justify-center text-center p-2 m-4 mb-2 rounded-2xl" +
+              glassStyle
+            }
+          >
+            <div className="text-3xl font-bold text-gray-300 ml-[1.5rem] tracking-[1.5rem] text-center uppercase">
+              Fordo
+            </div>
+          </div>
+
+          <div
+            className={
+              "flex flex-col p-2 m-4 mt-2 overflow-auto rounded-2xl" + glassStyle
+            }
+          >
+            {list}
+          </div>
+        </section>
+
+        {/* Main View */}
+        <section className="flex flex-col md:w-3/4 h-[100vh] justify-center border border-blue-400"></section>
       </div>
     </>
   );
