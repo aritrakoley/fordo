@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import RecipeItem, { RecipeItemType } from "../RecipeItem";
+import RecipeItem, { RecipeItemType } from "../molecules/RecipeItem";
 import { getRecipeList } from "../../utils/api.utils";
 import { addIcon } from "../atoms/Icons";
 import { Link } from "react-router-dom";
-import { glassStylePrimary, glassStyleSecondary } from "../atoms/commonStyles";
+import { glassStyleL1, glassStyleL2 } from "../atoms/commonStyles";
 
 const RecipeListPage = () => {
   const [recipeList, setRecipeList] = useState<RecipeItemType[]>([]);
@@ -14,29 +14,27 @@ const RecipeListPage = () => {
 
   const list = (
     <>
-      <div className={"flex items-center justify-between mb-4 rounded-lg py-2" + glassStyleSecondary}>
-        <div className={"w-full text-3xl font-bold text-center ml-[1rem] tracking-[1.25rem] leading-none text-gray-100 uppercase"}>
+      <div
+        className={
+          "flex flex-col items-center justify-between mb-4 rounded-lg py-2"
+        }
+      >
+        <div className={"w-[85%] h-px rounded-full" + glassStyleL2}></div>
+        <div
+          className={
+            "w-full text-3xl font-bold text-center my-1 ml-[1rem] tracking-[1.25rem] leading-none text-gray-100 uppercase"
+          }
+        >
           Recipes
         </div>
-      </div>
-
-      <div>
-      <Link
-          className="top-0 right-0 z-10 m-2 text-2xl text-white rounded-full bg-gray-700/70"
-          to={"/recipe/new"}
-        >
-          {addIcon}
-        </Link>
+        <div className={"w-[85%] h-px rounded-full" + glassStyleL2}></div>
       </div>
 
       <div className="flow-root overflow-auto">
-        <ul
-          role="list"
-          className="divide-y divide-gray-200"
-        >
+        <ul role="list">
           {recipeList?.length
             ? recipeList.map((r) => (
-                <li key={r.id} className="py-3 sm:py-4">
+                <li key={r.id} className="py-1">
                   <RecipeItem recipe={r} />
                 </li>
               ))
@@ -56,7 +54,7 @@ const RecipeListPage = () => {
             id="brand-logo"
             className={
               "flex items-center justify-center text-center p-2 m-4 mb-2 rounded-2xl" +
-              glassStylePrimary
+              glassStyleL1
             }
           >
             <div className="text-4xl font-bold text-gray-100 ml-[1.5rem] tracking-[1.5rem] text-center uppercase">
@@ -66,7 +64,8 @@ const RecipeListPage = () => {
 
           <div
             className={
-              "flex flex-col p-2 m-4 mt-2 overflow-auto rounded-2xl" + glassStylePrimary
+              "flex flex-col p-2 m-4 mt-2 overflow-auto rounded-2xl" +
+              glassStyleL1
             }
           >
             {list}
@@ -74,7 +73,16 @@ const RecipeListPage = () => {
         </section>
 
         {/* Main View */}
-        <section className="flex flex-col md:w-3/4 h-[100vh] justify-center border border-blue-400"></section>
+        <section className="flex flex-col md:w-3/4 h-[100vh] justify-start border border-blue-400">
+          <div>
+            <Link
+              className="top-0 right-0 z-10 m-2 text-2xl text-white rounded-full bg-gray-700/70"
+              to={"/recipe/new"}
+            >
+              {addIcon}
+            </Link>
+          </div>
+        </section>
       </div>
     </>
   );
