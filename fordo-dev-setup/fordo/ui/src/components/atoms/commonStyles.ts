@@ -10,4 +10,10 @@ export const glassStyleL1Dark =
 export const glassStyleL2Dark =
   " backdrop-blur-lg bg-gradient-to-br from-gray-500/40 to-gray-900/40 shadow-md shadow-gray-900/50 border-1 border-gray-50/20";
 
+export const glassStyleButton =
+  " backdrop-blur-md bg-gradient-to-br from-gray-100/40 to-gray-500/40 shadow-sm shadow-gray-900/50 border-1 border-gray-50/20";
+
+export const glassStyleButtonLong =
+  " backdrop-blur-md bg-gradient-to-br from-gray-100/40 to-gray-500/40 shadow-sm shadow-gray-900/50 border-1 border-gray-50/20 rounded-full";
+
 export const highlightBorder = "hover:border hover:border-red-600";

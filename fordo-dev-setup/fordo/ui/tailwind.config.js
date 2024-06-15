@@ -11,6 +11,9 @@ export default {
       },
       scale: {
         '98': '0.98',
+      },
+      boxShadow: {
+        'input': 'inset 0 0 0.5rem 4px rgba(255, 255, 255, 0.2)'
       }
     },
   },
