@@ -8,6 +8,7 @@ import {
   glassStyleButtonLong,
   glassStyleL1,
   glassStyleL2,
+  glassStyleL2Dark,
 } from "../atoms/commonStyles";
 
 const RecipeListPage = () => {
@@ -35,8 +36,8 @@ const RecipeListPage = () => {
         <div className={"w-[85%] h-px rounded-full" + glassStyleL2}></div>
       </div>
 
-      <div className="w-full flex items-center justify-center mb-4 ">
-        <div className="group flex flex-1 h-full items-center rounded-full px-4 text-gray-100 backdrop-blur-md bg-gradient-to-br from-gray-500/40 to-gray-950/40 shadow-input border-1 border-gray-100/20">
+      <div className="group/bar w-full flex items-center justify-center mb-4 ">
+        <div className="group/search flex flex-1 h-full items-center rounded-full px-4 text-gray-100 backdrop-blur-md bg-gradient-to-br from-gray-500/40 to-gray-950/40 shadow-input border-1 border-gray-100/20">
           <input
             className={`w-full h-10 px-2 bg-transparent outline-none peer`}
             placeholder="Search"
@@ -45,6 +46,21 @@ const RecipeListPage = () => {
             {searchIcon}
           </span>
         </div>
+
+        <Link
+          className={
+            "group/new h-10 w-10 flex items-center justify-center text-xl  transition-all duration-300 ease-in-out overflow-hidden hover:w-full rounded-full ml-2" +
+            glassStyleL2Dark
+          }
+          to={"/recipe/new"}
+        >
+          <span className="w-full overflow-hidden flex text-nowrap justify-center items-center text-gray-100">
+            Add New Recipe
+          </span>
+          <span className="text-gray-100 group-hover/new:opacity-0 group-hover/new:fixed group-hover/new:right-0 duration-100 ease-in-out">
+            {addIcon}
+          </span>
+        </Link>
       </div>
 
       <div className="flex-1 flow-root overflow-auto">
@@ -61,18 +77,6 @@ const RecipeListPage = () => {
 
       <div className="flex items-center justify-center text-xl text-gray-100 w-full my-2">
         <div className={"w-full h-px rounded-full" + glassStyleL2}></div>
-      </div>
-
-      <div
-        className={
-          "group flex items-center justify-start text-xl h-[2.5rem] w-fit hover:w-full  duration-700 ease-in-out overflow-hidden" +
-          glassStyleButtonLong
-        }
-      >
-        <Link className="text-gray-100" to={"/recipe/new"}>
-          {addIcon}
-        </Link>
-        <p className="ml-4 hidden group-hover:flex text-gray-100">Add New Recipe</p>
       </div>
     </>
   );
