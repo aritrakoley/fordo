@@ -9,6 +9,12 @@ import {
   peopleIcon,
 } from "../atoms/Icons";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  glassStyleButton,
+  glassStyleL1,
+  glassStyleL1Gray,
+  glassStyleL2Dark,
+} from "../atoms/commonStyles";
 
 export type RecipeType = {
   id: number | null | undefined;
@@ -69,15 +75,42 @@ const RecipeDetailsPage = () => {
   };
 
   return (
-    <div className="flex w-full mx-auto ">
-      <div className="relative inline-block w-full p-4 bg-gray-600 rounded-lg shadow">
+    <div className="flex w-full h-full mx-auto border  border-red-600">
+      <div
+        className={
+          "flex w-full p-4 mt-[5rem] ml-[5rem] rounded-lg shadow" +
+          glassStyleL1Gray
+        }
+      >
         <div
-          className="absolute top-0 right-0 z-10 m-2 text-2xl text-white rounded-full bg-gray-700/70"
+          className={
+            "absolute top-0 right-0 z-10 m-2 text-2xl text-white rounded-full" +
+            glassStyleButton
+          }
           onClick={handleClose}
         >
           {closeIcon}
         </div>
-        <div className="relative flex justify-center overflow-hidden rounded-lg h-52">
+
+        <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4"}>
+          <div className="z-10 h-[40%] mt-[-5rem] ml-[-5rem] bg-black flex justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-950 ">
+            <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
+              <img src={defaultImg} className="object-cover w-full h-full" />
+            </div>
+          </div>
+          <div
+            className={"flex w-full flex-1 rounded-2xl mr-2" + glassStyleL2Dark}
+          >
+            A
+          </div>
+        </div>
+        <div
+          className={"flex w-[60%] h-full rounded-2xl ml-2" + glassStyleL2Dark}
+        >
+          B
+        </div>
+
+        {/* <div className="relative mt-[-5rem] ml-[-5rem] flex justify-center overflow-hidden rounded-lg h-96 w-96">
           <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
             <img src={defaultImg} className="object-cover w-full h-full" />
           </div>
@@ -105,9 +138,9 @@ const RecipeDetailsPage = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <h2 className="text-base font-medium text-gray-200 md:text-lg line-clamp-1">
             {recipe?.recipe_name}
           </h2>
@@ -208,7 +241,7 @@ const RecipeDetailsPage = () => {
                 ))
               : null}
           </ul>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import RecipeItem, { RecipeItemType } from "../molecules/RecipeItem";
 import { getRecipeList } from "../../utils/api.utils";
 import { addIcon, searchIcon } from "../atoms/Icons";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import {
-  glassStyleButton,
-  glassStyleButtonLong,
   glassStyleL1,
   glassStyleL2,
   glassStyleL2Dark,
@@ -49,7 +47,7 @@ const RecipeListPage = () => {
 
         <Link
           className={
-            "group/new h-10 w-10 flex items-center justify-center text-xl  transition-all duration-300 ease-in-out overflow-hidden hover:w-full rounded-full ml-2" +
+            "group/new h-10 w-10 flex items-center justify-center text-xl transition-all duration-300 ease-in-out overflow-hidden hover:w-full rounded-full ml-2" +
             glassStyleL2Dark
           }
           to={"/recipe/new"}
@@ -81,7 +79,6 @@ const RecipeListPage = () => {
     </>
   );
 
-  // console.log(openPage, openRecipeId);
   return (
     <>
       <div className="flex items-center justify-between w-full h-[100vh] mx-auto bg-[url('/public/dark-bg.png')] bg-cover">
@@ -110,7 +107,9 @@ const RecipeListPage = () => {
         </section>
 
         {/* Main View */}
-        <section className="flex flex-col md:w-3/4 h-[100vh] justify-start border border-blue-400"></section>
+        <section className="flex flex-col p-4 w-full h-[100vh] justify-start border  border-blue-400">
+          <Outlet />
+        </section>
       </div>
     </>
   );

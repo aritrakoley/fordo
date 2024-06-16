@@ -1,6 +1,8 @@
 export const glassStyleL1 =
   " backdrop-blur-md bg-gradient-to-br from-cyan-50/20 to-cyan-500/20 shadow-sm shadow-gray-900/50 border-1 border-cyan-50/20";
-
+  export const glassStyleL1Gray =
+  " backdrop-blur-md bg-gradient-to-br from-gray-50/20 to-gray-500/20 shadow-sm shadow-gray-900/50 border-1 border-gray-50/20";
+  
 export const glassStyleL2 =
   " backdrop-blur-md bg-gradient-to-br from-gray-100/40 to-gray-500/40 shadow-sm shadow-gray-900/50 border-1 border-gray-50/20";
 

@@ -6,12 +6,9 @@ import RecipeFormPage from "./components/pages/RecipeFormPage";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <RecipeListPage />,
     errorElement: <div>404 Not Found</div>,
     children: [
-      {
-        path: "",
-        element: <RecipeListPage />,
-      },
       {
         path: "/recipe/new",
         element: <RecipeFormPage />,
