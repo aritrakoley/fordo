@@ -15,6 +15,8 @@ import {
   glassStyleL1Gray,
   glassStyleL2Dark,
 } from "../atoms/commonStyles";
+import RecipeHeader from "../molecules/RecipeHeader";
+import RecipeSteps from "../molecules/RecipeSteps";
 
 export type RecipeType = {
   id: number | null | undefined;
@@ -75,7 +77,7 @@ const RecipeDetailsPage = () => {
   };
 
   return (
-    <div className="flex w-full h-full mx-auto border  border-red-600">
+    <div className="flex w-full h-full mx-auto">
       <div
         className={
           "flex w-full p-4 mt-[5rem] ml-[5rem] rounded-lg shadow" +
@@ -92,7 +94,7 @@ const RecipeDetailsPage = () => {
           {closeIcon}
         </div>
 
-        <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4"}>
+        <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4 "}>
           <div className="z-10 h-[40%] mt-[-5rem] ml-[-5rem] bg-black flex justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-950 ">
             <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
               <img src={defaultImg} className="object-cover w-full h-full" />
@@ -100,14 +102,14 @@ const RecipeDetailsPage = () => {
           </div>
           <div
             className={"flex w-full flex-1 rounded-2xl mr-2" + glassStyleL2Dark}
-          >
-            A
-          </div>
+          ></div>
         </div>
-        <div
-          className={"flex w-[60%] h-full rounded-2xl ml-2" + glassStyleL2Dark}
-        >
-          B
+        <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2 border border-red-400">
+          <RecipeHeader
+            title={recipe.recipe_name}
+            description={recipe.description}
+          />
+          <RecipeSteps steps={recipe.steps} />
         </div>
 
         {/* <div className="relative mt-[-5rem] ml-[-5rem] flex justify-center overflow-hidden rounded-lg h-96 w-96">
