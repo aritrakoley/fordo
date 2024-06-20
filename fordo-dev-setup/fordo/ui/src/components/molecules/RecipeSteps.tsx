@@ -1,20 +1,18 @@
+import RecipeStep from "../atoms/RecipeStep";
 import { glassStyleL3 } from "../atoms/commonStyles";
 
-type RecipeStep = {
-  id: number | null | undefined;
-  body: string | null | undefined;
-  title: string | null | undefined;
-  sort_order: number | null | undefined;
-};
 type RecipeStepsPropType = { steps: RecipeStep[] };
 const RecipeSteps = (props: RecipeStepsPropType) => {
   const { steps } = props;
   return (
-    <div className={"flex w-full flex-1 rounded-2xl mr-2" + glassStyleL3}>
-      {JSON.stringify(steps)}
-      <ul>
+    <div className="flex flex-col overflow-y-auto w-full flex-1 rounded-2xl mt-4">
+      <ul className="w-full h-full">
         {steps?.length
-          ? steps.map((step) => <li key={step.id}>{step.toString()}</li>)
+          ? steps.map((step, idx) => (
+              <li key={step.id} className="w-100">
+                <RecipeStep idx={idx + 1} step={step} />
+              </li>
+            ))
           : null}
       </ul>
     </div>

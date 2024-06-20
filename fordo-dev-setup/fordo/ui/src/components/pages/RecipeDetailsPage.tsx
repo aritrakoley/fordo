@@ -104,7 +104,7 @@ const RecipeDetailsPage = () => {
             className={"flex w-full flex-1 rounded-2xl mr-2" + glassStyleL2Dark}
           ></div>
         </div>
-        <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2 border border-red-400">
+        <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2">
           <RecipeHeader
             title={recipe.recipe_name}
             description={recipe.description}
