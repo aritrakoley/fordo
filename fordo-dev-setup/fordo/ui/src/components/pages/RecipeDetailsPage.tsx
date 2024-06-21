@@ -14,9 +14,11 @@ import {
   glassStyleL1,
   glassStyleL1Gray,
   glassStyleL2Dark,
+  glassStyleL3Dark,
 } from "../atoms/commonStyles";
 import RecipeHeader from "../molecules/RecipeHeader";
 import RecipeSteps from "../molecules/RecipeSteps";
+import InfoBar from "../molecules/InfoBar";
 
 export type RecipeType = {
   id: number | null | undefined;
@@ -96,13 +98,34 @@ const RecipeDetailsPage = () => {
 
         <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4 "}>
           <div className="z-10 h-[40%] mt-[-5rem] ml-[-5rem] bg-black flex justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-950 ">
-            <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
-              <img src={defaultImg} className="object-cover w-full h-full" />
+            <div className="relative w-full">
+              <img
+                src={defaultImg}
+                className="object-cover w-full h-full transition-transform duration-300 ease-in-out transform hover:scale-110"
+              />
+              <div className="absolute top-0 left-0 mt-2 w-fit">
+                <InfoBar />
+              </div>
             </div>
           </div>
           <div
-            className={"flex w-full flex-1 rounded-2xl mr-2" + glassStyleL2Dark}
-          ></div>
+            className={"flex w-full flex-1 rounded-2xl p-4" + glassStyleL2Dark}
+          >
+            <div className="flex flex-col items-start justify-start w-full ">
+              <h1 className="flex items-center justify-center mb-2 text-4xl text-gray-100">
+                Ingredients
+              </h1>
+              <ul >
+                {recipe?.ingredients
+                  ? recipe.ingredients.map((i) => (
+                      <li key={i.id}>
+                        <div>{JSON.stringify(i)}</div>
+                      </li>
+                    ))
+                  : null}
+              </ul>
+            </div>
+          </div>
         </div>
         <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2">
           <RecipeHeader
