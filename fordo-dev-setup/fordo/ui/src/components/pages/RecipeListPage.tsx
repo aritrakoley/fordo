@@ -83,7 +83,7 @@ const RecipeListPage = () => {
     <>
       <div className="flex items-center justify-between w-full h-[100vh] mx-auto bg-[url('/public/dark-bg.png')] bg-cover">
         {/* Left Pane */}
-        <section className="flex flex-col w-[24rem] h-[100vh] justify-start border border-red-400">
+        <section className="flex flex-col w-[24rem] h-[100vh] justify-start">
           <div
             id="brand-logo"
             className={
@@ -107,7 +107,7 @@ const RecipeListPage = () => {
         </section>
 
         {/* Main View */}
-        <section className="flex flex-col p-4 w-full h-[100vh] justify-start border  border-blue-400">
+        <section className="flex flex-col p-4 w-full h-[100vh] justify-start">
           <Outlet />
         </section>
       </div>

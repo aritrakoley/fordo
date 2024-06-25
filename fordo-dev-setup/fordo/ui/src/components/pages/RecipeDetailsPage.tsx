@@ -6,6 +6,7 @@ import {
   clipboardIcon,
   clockOutlineIcon,
   closeIcon,
+  hotMealIcon,
   peopleIcon,
 } from "../atoms/Icons";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,6 +20,8 @@ import {
 import RecipeHeader from "../molecules/RecipeHeader";
 import RecipeSteps from "../molecules/RecipeSteps";
 import InfoBar from "../molecules/InfoBar";
+import IngredientItem from "../molecules/IngredientItem";
+import Ingredients from "../molecules/Ingredients";
 
 export type RecipeType = {
   id: number | null | undefined;
@@ -108,23 +111,58 @@ const RecipeDetailsPage = () => {
               </div>
             </div>
           </div>
-          <div
-            className={"flex w-full flex-1 rounded-2xl p-4" + glassStyleL2Dark}
-          >
-            <div className="flex flex-col items-start justify-start w-full ">
-              <h1 className="flex items-center justify-center mb-2 text-4xl text-gray-100">
-                Ingredients
-              </h1>
-              <ul >
-                {recipe?.ingredients
-                  ? recipe.ingredients.map((i) => (
-                      <li key={i.id}>
-                        <div>{JSON.stringify(i)}</div>
+
+          <div className="flex w-full max-h-[10%]">
+            <div
+              className={
+                "flex flex-col w-full h-full flex-1 rounded-2xl px-4 mr-2" +
+                glassStyleL3Dark
+              }
+            >
+              <h1 className="text-gray-100">Meal Types :</h1>
+              <ul className="overflow-auto mb-2">
+                {recipe?.meal_types
+                  ? recipe.meal_types.map((mt) => (
+                      <li key={mt.id}>
+                        <div className="flex gap-2 items-center text-gray-100 px-2">
+                          {hotMealIcon}
+                          {mt.label}
+                        </div>
                       </li>
                     ))
                   : null}
               </ul>
             </div>
+            <div
+              className={
+                "flex flex-col w-full h-full flex-1 rounded-2xl px-4" +
+                glassStyleL3Dark
+              }
+            >
+              <h1 className="text-gray-100">Tags :</h1>
+              <div className="flex flex-wrap overflow-auto mb-2">
+                {recipe?.tags
+                  ? recipe.tags.map((t) => (
+                      <div
+                        key={t.id}
+                        className={"flex gap-2 items-center text-gray-100 px-2 rounded-full m-1" + glassStyleButton}
+                      >
+                       
+                        {t.label}
+                      </div>
+                    ))
+                  : null}
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={
+              "flex w-full max-h-[calc(60% + 5rem)] overflow-hidden flex-1 rounded-2xl p-4" +
+              glassStyleL2Dark
+            }
+          >
+            <Ingredients ingredients={recipe?.ingredients} />
           </div>
         </div>
         <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2">

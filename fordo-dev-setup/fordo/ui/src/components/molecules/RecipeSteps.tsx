@@ -1,5 +1,4 @@
 import RecipeStep from "../atoms/RecipeStep";
-import { glassStyleL3 } from "../atoms/commonStyles";
 
 type RecipeStepsPropType = { steps: RecipeStep[] };
 const RecipeSteps = (props: RecipeStepsPropType) => {
