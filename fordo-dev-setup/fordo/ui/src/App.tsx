@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/recipe/new",
-        element: <RecipeFormPage />,
+        element: <RecipeFormPage isNew={true}/>,
       },
       {
         path: "/recipe/:id",
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/recipe/:id/edit",
-        element: <RecipeFormPage />,
+        element: <RecipeFormPage isNew={false}/>,
       },
     ],
   },

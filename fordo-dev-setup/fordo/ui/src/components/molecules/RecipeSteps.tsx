@@ -4,7 +4,7 @@ type RecipeStepsPropType = { steps: RecipeStep[] };
 const RecipeSteps = (props: RecipeStepsPropType) => {
   const { steps } = props;
   return (
-    <div className="flex flex-col overflow-y-auto w-full flex-1 rounded-2xl mt-4">
+    <div className="flex flex-col flex-1 w-full mt-4 overflow-y-auto rounded-2xl">
       <ul className="w-full h-full">
         {steps?.length
           ? steps

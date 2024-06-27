@@ -120,11 +120,11 @@ const RecipeDetailsPage = () => {
               }
             >
               <h1 className="text-gray-100">Meal Types :</h1>
-              <ul className="overflow-auto mb-2">
+              <ul className="mb-2 overflow-auto">
                 {recipe?.meal_types
                   ? recipe.meal_types.map((mt) => (
                       <li key={mt.id}>
-                        <div className="flex gap-2 items-center text-gray-100 px-2">
+                        <div className="flex items-center gap-2 px-2 text-gray-100">
                           {hotMealIcon}
                           {mt.label}
                         </div>
@@ -140,14 +140,16 @@ const RecipeDetailsPage = () => {
               }
             >
               <h1 className="text-gray-100">Tags :</h1>
-              <div className="flex flex-wrap overflow-auto mb-2">
+              <div className="flex flex-wrap mb-2 overflow-auto">
                 {recipe?.tags
                   ? recipe.tags.map((t) => (
                       <div
                         key={t.id}
-                        className={"flex gap-2 items-center text-gray-100 px-2 rounded-full m-1" + glassStyleButton}
+                        className={
+                          "flex gap-2 items-center text-gray-100 px-2 rounded-full m-1" +
+                          glassStyleButton
+                        }
                       >
-                       
                         {t.label}
                       </div>
                     ))
@@ -172,139 +174,6 @@ const RecipeDetailsPage = () => {
           />
           <RecipeSteps steps={recipe.steps} />
         </div>
-
-        {/* <div className="relative mt-[-5rem] ml-[-5rem] flex justify-center overflow-hidden rounded-lg h-96 w-96">
-          <div className="w-full transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src={defaultImg} className="object-cover w-full h-full" />
-          </div>
-
-          <div className="absolute bottom-0 flex justify-center mb-3">
-            <div className="flex px-4 py-1 space-x-10 overflow-hidden bg-gray-600 rounded-lg shadow">
-              <p className="flex font-medium text-gray-200 space-between">
-                {clockOutlineIcon}
-                <span className="ml-2">
-                  {recipe?.prep_time ? (recipe.prep_time / 60).toFixed(0) : 0} +{" "}
-                  {recipe?.cook_time ? (recipe.cook_time / 60).toFixed(0) : 0}
-                </span>
-              </p>
-
-              <p className="flex items-center font-medium text-gray-200">
-                {clipboardIcon}
-                <span className="ml-2">
-                  {recipe?.ingredients?.length ?? "-"}
-                </span>
-              </p>
-
-              <p className="flex items-center font-medium text-gray-200">
-                {peopleIcon}
-                <span className="ml-2">{recipe?.serving_size ?? "-"}</span>
-              </p>
-            </div>
-          </div>
-        </div> */}
-
-        {/* <div className="mt-4">
-          <h2 className="text-base font-medium text-gray-200 md:text-lg line-clamp-1">
-            {recipe?.recipe_name}
-          </h2>
-          <p className="mt-2 text-gray-400 text-md">{recipe?.description}</p>
-        </div>
-
-        <div className="grid grid-cols-2 grid-rows-2 gap-4 mt-8">
-          <div className="flex flex-col text-gray-100 xl:items-center">
-            <div className="text-2xl">Meal Types:</div>
-            <div>
-              <ul>
-                {recipe?.meal_types?.length
-                  ? recipe.meal_types.map((mt) => (
-                      <li key={mt.id} className="capitalize">
-                        {mt.label}
-                      </li>
-                    ))
-                  : null}
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex flex-col text-gray-100 xl:items-center">
-            <div className="text-2xl">Tags:</div>
-            <div>
-              <ul>
-                {recipe?.tags?.length
-                  ? recipe.tags.map((t) => (
-                      <li key={t.id} className="capitalize">
-                        {t.label}
-                      </li>
-                    ))
-                  : null}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="flow-root">
-          <div className="text-2xl text-gray-100">Ingredients:</div>
-          <ul
-            role="list"
-            className="divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            {recipe?.ingredients?.length
-              ? recipe.ingredients.map((i) => (
-                  <li
-                    key={i.id}
-                    className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
-                  >
-                    <span className="capitalize">{i.ingredient_name}:</span>{" "}
-                    {i.quantity} {i.unit}
-                  </li>
-                ))
-              : null}
-          </ul>
-        </div>
-
-        <div className="flow-root mt-10">
-          <div className="text-2xl text-gray-100">Steps:</div>
-          <ul
-            role="list"
-            className="divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            {recipe?.steps?.length
-              ? recipe.steps.map((s) => (
-                  <li
-                    key={s.id}
-                    className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
-                  >
-                    <span className="capitalize">
-                      {s.sort_order}. {s.title}: <br />
-                      {s.body}
-                    </span>
-                  </li>
-                ))
-              : null}
-          </ul>
-        </div>
-
-        <div className="flow-root mt-10">
-          <div className="text-2xl text-gray-100">Notes:</div>
-          <ul
-            role="list"
-            className="divide-y divide-gray-200 dark:divide-gray-700"
-          >
-            {recipe?.notes?.length
-              ? recipe.notes.map((n) => (
-                  <li
-                    key={n.id}
-                    className="w-full py-4 text-gray-200 border-b-2 border-neutral-100 dark:border-white/10"
-                  >
-                    <span className="capitalize">
-                      {n.title} <br />
-                      {n.body}
-                    </span>
-                  </li>
-                ))
-              : null}
-          </ul>
-        </div> */}
       </div>
     </div>
   );
