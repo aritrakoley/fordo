@@ -14,7 +14,7 @@ type RecipeStepsFormPropType = {
   steps: RecipeStep[];
 };
 const RecipeSteps = (props: RecipeStepsFormPropType) => {
-  const { steps, setValue, watchRecipeSteps } = props;
+  const { setValue, watchRecipeSteps } = props;
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   return (
@@ -34,13 +34,13 @@ const RecipeSteps = (props: RecipeStepsFormPropType) => {
         <div className="relative z-0 w-full mb-10 group">
           <input
             ref={titleRef}
-            name="form_recipe_header"
-            id="form_recipe_header"
+            name="form_step_title"
+            id="form_step_title"
             className="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             placeholder=" "
           />
           <label
-            htmlFor="floating_password"
+            htmlFor="form_step_title"
             className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-200 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Step Title
@@ -49,13 +49,13 @@ const RecipeSteps = (props: RecipeStepsFormPropType) => {
         <div className="relative z-0 w-full h-full group">
           <textarea
             ref={descRef}
-            name="form_recipe_header"
-            id="form_recipe_header"
+            name="form_step_desc"
+            id="form_step_desc"
             className="block py-2.5 px-2 w-full text-sm text-gray-100 bg-transparent rounded-2xl border-2 border-gray-400 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             placeholder=" "
           />
           <label
-            htmlFor="floating_password"
+            htmlFor="form_step_desc"
             className="px-4 absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-200 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
           >
             Step Description
