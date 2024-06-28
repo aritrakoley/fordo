@@ -1,5 +1,5 @@
 type RecipeStep = {
-  id: number | null | undefined;
+  id?: number | null ;
   body: string | null | undefined;
   title: string | null | undefined;
   sort_order: number | null | undefined;

@@ -9,7 +9,7 @@ import {
   glassStyleL2Dark,
   glassStyleL3Dark,
 } from "../atoms/commonStyles";
-import RecipeSteps from "../molecules/RecipeSteps";
+import RecipeStepsForm from "../molecules/RecipeStepsForm";
 import Ingredients from "../molecules/Ingredients";
 import { RecipeType } from "./RecipeDetailsPage";
 import InfoBarForm from "../molecules/InfoBarForm";
@@ -22,6 +22,7 @@ export type FormFields = {
   prep_time: number;
   cook_time: number;
   serving_size: number;
+  recipe_steps: RecipeStep[];
 };
 
 type RecipeFormPagePropType = { isNew: boolean };
@@ -32,7 +33,8 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
 
   const [recipe, setRecipe] = useState<RecipeType | undefined>();
 
-  const { register, handleSubmit } = useForm<FormFields>();
+  const { register, watch, setValue, handleSubmit } = useForm<FormFields>();
+  const watchRecipeSteps = watch("recipe_steps", []);
 
   useEffect(() => {
     if (recipeId) {
@@ -79,7 +81,7 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
           }
           type="submit"
         >
-          <span className="w-10 h-10 border border-red-400">{saveIcon}</span>
+          <span className="w-10 h-10">{saveIcon}</span>
         </button>
 
         <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4 "}>
@@ -161,7 +163,11 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
             title={recipe?.recipe_name}
             description={recipe?.description}
           />
-          <RecipeSteps steps={recipe?.steps ?? []} />
+          <RecipeStepsForm
+            setValue={setValue}
+            watchRecipeSteps={watchRecipeSteps}
+            steps={recipe?.steps ?? []}
+          />
         </div>
       </div>
     </form>
