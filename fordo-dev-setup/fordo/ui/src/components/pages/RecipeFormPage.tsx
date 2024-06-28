@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import defaultImg from "../../assets/default_recipe_bg.jpg";
 import { getRecipeDetails } from "../../utils/api.utils";
 import { closeIcon, hotMealIcon, saveIcon } from "../atoms/Icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   glassStyleButton,
   glassStyleL1Gray,
@@ -25,9 +25,8 @@ export type FormFields = {
   recipe_steps: RecipeStep[];
 };
 
-type RecipeFormPagePropType = { isNew: boolean };
-
-const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
+const RecipeFormPage = () => {
+  const location = useLocation();
   const { id: recipeId } = useParams();
   const navigate = useNavigate();
 
@@ -40,7 +39,8 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
     if (recipeId) {
       getRecipeDetails(parseInt(recipeId)).then((recipe) => setRecipe(recipe));
     }
-    if (!recipeId && !isNew) {
+
+    if (!recipeId && location.pathname !== "/recipe/new") {
       navigate("/");
     }
   }, [recipeId]);
