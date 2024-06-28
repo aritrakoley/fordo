@@ -69,7 +69,7 @@ const InfoBarForm = ({
         {peopleIcon}
         <div className="flex items-center h-full text-gray-100 rounded-full group/search backdrop-blur-md bg-gradient-to-br from-gray-500/40 to-gray-950/40 shadow-input border-1 border-gray-100/20">
           <input
-            {...register("serveing_size")}
+            {...register("serving_size")}
             className={`w-36 h-8 px-2 text-lg bg-transparent outline-none peer`}
             placeholder="Serves"
             type="number"

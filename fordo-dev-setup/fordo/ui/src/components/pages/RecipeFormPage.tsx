@@ -1,34 +1,27 @@
 import { useEffect, useState } from "react";
 import defaultImg from "../../assets/default_recipe_bg.jpg";
-import { mockRecipe } from "../../utils/dummy.data";
 import { getRecipeDetails } from "../../utils/api.utils";
-import {
-  clipboardIcon,
-  clockOutlineIcon,
-  closeIcon,
-  hotMealIcon,
-  peopleIcon,
-  saveIcon,
-} from "../atoms/Icons";
+import { closeIcon, hotMealIcon, saveIcon } from "../atoms/Icons";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   glassStyleButton,
-  glassStyleL1,
   glassStyleL1Gray,
   glassStyleL2Dark,
   glassStyleL3Dark,
 } from "../atoms/commonStyles";
-import RecipeHeader from "../molecules/RecipeHeader";
 import RecipeSteps from "../molecules/RecipeSteps";
 import Ingredients from "../molecules/Ingredients";
 import { RecipeType } from "./RecipeDetailsPage";
 import InfoBarForm from "../molecules/InfoBarForm";
 import { SubmitHandler, useForm } from "react-hook-form";
+import RecipeHeaderForm from "../molecules/RecipeHeaderForm";
 
 export type FormFields = {
+  recipe_name: string;
+  recipe_description: string;
   prep_time: number;
   cook_time: number;
-  serveing_size: number;
+  serving_size: number;
 };
 
 type RecipeFormPagePropType = { isNew: boolean };
@@ -88,7 +81,6 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
         >
           <span className="w-10 h-10 border border-red-400">{saveIcon}</span>
         </button>
-
 
         <div className={"flex flex-col w-[40%] h-full rounded-2xl mr-2 gap-4 "}>
           <div className="z-10 h-[40%] mt-[-5rem] ml-[-5rem] bg-black flex justify-center overflow-hidden rounded-lg shadow-lg shadow-gray-950 ">
@@ -164,7 +156,8 @@ const RecipeFormPage = ({ isNew }: RecipeFormPagePropType) => {
           </div>
         </div>
         <div className="flex flex-col gap-2 w-[60%] h-full rounded-2xl ml-2">
-          <RecipeHeader
+          <RecipeHeaderForm
+            register={register}
             title={recipe?.recipe_name}
             description={recipe?.description}
           />
